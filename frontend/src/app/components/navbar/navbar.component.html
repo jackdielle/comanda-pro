@@ -1,0 +1,83 @@
+<nav class="navbar" *ngIf="isLoggedIn()">
+  <div class="navbar-container">
+    <div class="navbar-content">
+      <!-- Logo -->
+      <div class="navbar-logo">
+        <img src="assets/sliceflow-logo.png" alt="SliceFlow Logo" class="navbar-logo-img">
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="navbar-menu">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="navbar-link">
+          {{ 'nav.dashboard' | transloco }}
+        </a>
+        <a routerLink="/new-order" routerLinkActive="active"
+          class="navbar-link">
+          {{ 'nav.newOrder' | transloco }}
+        </a>
+        <a routerLink="/orders" routerLinkActive="active"
+          class="navbar-link">
+          {{ 'nav.orders' | transloco }}
+        </a>
+        <a routerLink="/customers" routerLinkActive="active"
+          class="navbar-link">
+          {{ 'nav.customers' | transloco }}
+        </a>
+        <a routerLink="/products" routerLinkActive="active"
+          class="navbar-link">
+          {{ 'nav.products' | transloco }}
+        </a>
+        <a routerLink="/admin/users" routerLinkActive="active" *ngIf="isAdmin()"
+          class="navbar-link navbar-link-admin">
+          {{ 'nav.admin' | transloco }}
+        </a>
+      </div>
+
+      <!-- User Menu -->
+      <div class="navbar-user" *ngIf="currentUser$ | async as user">
+        <span class="user-badge">{{ user.username }}</span>
+        <a routerLink="/profile" class="navbar-button">{{ 'nav.profile' | transloco }}</a>
+        <button (click)="logout()" class="navbar-button navbar-button-logout">{{ 'nav.logout' | transloco }}</button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="mobile-toggle">
+        <button (click)="toggleMenu()" class="menu-button">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div *ngIf="menuOpen" class="navbar-mobile-menu">
+      <a routerLink="/" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.dashboard' | transloco }}
+      </a>
+      <a routerLink="/new-order" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.newOrder' | transloco }}
+      </a>
+      <a routerLink="/orders" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.orders' | transloco }}
+      </a>
+      <a routerLink="/customers" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.customers' | transloco }}
+      </a>
+      <a routerLink="/products" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.products' | transloco }}
+      </a>
+      <a routerLink="/admin/users" (click)="closeMenu()" *ngIf="isAdmin()" class="navbar-mobile-link navbar-mobile-link-admin">
+        {{ 'nav.admin' | transloco }}
+      </a>
+      <a routerLink="/profile" (click)="closeMenu()" class="navbar-mobile-link">
+        {{ 'nav.profile' | transloco }}
+      </a>
+      <button (click)="logout()" class="navbar-mobile-link navbar-mobile-link-logout">
+        {{ 'nav.logout' | transloco }}
+      </button>
+    </div>
+  </div>
+</nav>

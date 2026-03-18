@@ -1,0 +1,83 @@
+<div class="profile-container">
+  <div class="profile-content">
+    <h1>{{ 'profile.title' | transloco }}</h1>
+
+    <!-- Current User Info -->
+    <div class="user-card" *ngIf="currentUser$ | async as user">
+      <div class="user-info">
+        <h2>{{ user.username }}</h2>
+        <p><strong>{{ 'profile.role' | transloco }}:</strong> {{ user.role }}</p>
+        <p><strong>{{ 'profile.userId' | transloco }}:</strong> {{ user.userId }}</p>
+      </div>
+    </div>
+
+    <!-- Change Password Form -->
+    <div class="change-password-card">
+      <h2>{{ 'profile.changePassword' | transloco }}</h2>
+
+      <div class="alert alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="alert alert-error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+        <div class="form-group">
+          <label for="currentPassword">{{ 'profile.currentPassword' | transloco }}</label>
+          <input
+            id="currentPassword"
+            type="password"
+            class="form-control"
+            formControlName="currentPassword"
+            [placeholder]="'profile.currentPassword' | transloco"
+            [disabled]="loading"
+          />
+          <div class="error-message" *ngIf="changePasswordForm.get('currentPassword')?.invalid && changePasswordForm.get('currentPassword')?.touched">
+            {{ 'profile.currentPasswordRequired' | transloco }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword">{{ 'profile.newPassword' | transloco }}</label>
+          <input
+            id="newPassword"
+            type="password"
+            class="form-control"
+            formControlName="newPassword"
+            [placeholder]="'profile.newPassword' | transloco"
+            [disabled]="loading"
+          />
+          <div class="error-message" *ngIf="changePasswordForm.get('newPassword')?.invalid && changePasswordForm.get('newPassword')?.touched">
+            <span *ngIf="changePasswordForm.get('newPassword')?.hasError('required')">{{ 'profile.newPasswordRequired' | transloco }}</span>
+            <span *ngIf="changePasswordForm.get('newPassword')?.hasError('minlength')">{{ 'profile.passwordTooShort' | transloco }}</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">{{ 'profile.confirmPassword' | transloco }}</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            class="form-control"
+            formControlName="confirmPassword"
+            [placeholder]="'profile.confirmPassword' | transloco"
+            [disabled]="loading"
+          />
+          <div class="error-message" *ngIf="changePasswordForm.get('confirmPassword')?.invalid && changePasswordForm.get('confirmPassword')?.touched">
+            <span *ngIf="changePasswordForm.get('confirmPassword')?.hasError('required')">{{ 'profile.confirmPasswordRequired' | transloco }}</span>
+          </div>
+          <div class="error-message" *ngIf="changePasswordForm.hasError('passwordMismatch') && changePasswordForm.get('confirmPassword')?.touched">
+            {{ 'profile.passwordMismatch' | transloco }}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="changePasswordForm.invalid || loading">
+          <span *ngIf="!loading">{{ 'profile.changePassword' | transloco }}</span>
+          <span *ngIf="loading">{{ 'profile.updating' | transloco }}</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

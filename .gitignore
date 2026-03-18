@@ -1,0 +1,39 @@
+# Dependencies
+docs-site/node_modules/
+**/node_modules/
+package-lock.json
+yarn.lock
+
+# Build & Cache
+.angular/
+**/.angular/
+frontend/.angular/
+backend/target/
+
+# Build outputs
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Astro
+.astro/
+*.log
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,161 @@
+<div class="admin-users-container">
+  <div class="header">
+    <h1>{{ 'admin.title' | transloco }}</h1>
+    <button class="btn btn-primary" (click)="showCreateForm = !showCreateForm">
+      {{ showCreateForm ? ('common.cancel' | transloco) : ('admin.addNewUser' | transloco) }}
+    </button>
+  </div>
+
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="alert alert-error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Create User Form -->
+  <div class="form-card" *ngIf="showCreateForm">
+    <h2>{{ 'admin.createNewUser' | transloco }}</h2>
+    <form [formGroup]="createUserForm" (ngSubmit)="createUser()">
+      <div class="form-group">
+        <label for="username">{{ 'admin.username' | transloco }}</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          [placeholder]="'admin.username' | transloco"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'admin.password' | transloco }}</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          [placeholder]="'admin.password' | transloco"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="role">{{ 'admin.role' | transloco }}</label>
+        <select id="role" class="form-control" formControlName="role" [disabled]="loading">
+          <option value="ROLE_ADMIN">{{ 'admin.enabled' | transloco }}</option>
+          <option value="ROLE_MANAGER">Manager</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="createUserForm.invalid || loading">
+          {{ 'admin.createUser' | transloco }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="closeForm()" [disabled]="loading">
+          {{ 'common.cancel' | transloco }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Users Table -->
+  <div class="table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>{{ 'admin.username' | transloco }}</th>
+          <th>{{ 'admin.role' | transloco }}</th>
+          <th>{{ 'admin.status' | transloco }}</th>
+          <th>{{ 'admin.createdAt' | transloco }}</th>
+          <th>{{ 'common.actions' | transloco }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.username }}</td>
+          <td>
+            <span class="role-badge" [ngClass]="user.role === 'ROLE_ADMIN' ? 'admin' : 'manager'">
+              {{ user.role === 'ROLE_ADMIN' ? 'Admin' : 'Manager' }}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="user.enabled ? 'active' : 'inactive'">
+              {{ user.enabled ? ('admin.active' | transloco) : ('admin.inactive' | transloco) }}
+            </span>
+          </td>
+          <td>{{ user.createdAt | date: 'short' }}</td>
+          <td class="actions">
+            <button
+              class="btn btn-small btn-warning"
+              (click)="toggleEnabled(user.id)"
+              [title]="user.enabled ? ('admin.disable' | transloco) : ('admin.enable' | transloco)"
+            >
+              {{ user.enabled ? ('admin.disable' | transloco) : ('admin.enable' | transloco) }}
+            </button>
+            <button
+              class="btn btn-small btn-info"
+              (click)="openResetPasswordForm(user.id)"
+              [title]="'admin.resetPassword' | transloco"
+            >
+              {{ 'admin.resetPassword' | transloco }}
+            </button>
+            <button
+              class="btn btn-small btn-danger"
+              (click)="deleteUser(user.id)"
+              [title]="'common.delete' | transloco"
+            >
+              {{ 'common.delete' | transloco }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div class="modal" *ngIf="showResetPasswordForm">
+    <div class="modal-content">
+      <h2>{{ 'admin.resetUserPassword' | transloco }}</h2>
+      <form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+        <div class="form-group">
+          <label for="newPassword">{{ 'admin.newPassword' | transloco }}</label>
+          <input
+            id="newPassword"
+            type="password"
+            class="form-control"
+            formControlName="newPassword"
+            [placeholder]="'admin.newPassword' | transloco"
+            [disabled]="loading"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">{{ 'admin.confirmPassword' | transloco }}</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            class="form-control"
+            formControlName="confirmPassword"
+            [placeholder]="'admin.confirmPassword' | transloco"
+            [disabled]="loading"
+          />
+          <div class="error-message" *ngIf="resetPasswordForm.hasError('passwordMismatch')">
+            {{ 'admin.passwordMismatch' | transloco }}
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="resetPasswordForm.invalid || loading">
+            {{ 'admin.resetPassword' | transloco }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeForm()" [disabled]="loading">
+            {{ 'common.cancel' | transloco }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Blog">
+  <!-- Hero -->
+  <section class="bg-gray-50 py-12">
+    <div class="container-wide">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">ComandaPro Blog</h1>
+      <p class="text-xl text-gray-600">Latest articles, updates, and tips for pizza restaurant managers.</p>
+    </div>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="py-16">
+    <div class="container-wide">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Post 1 -->
+        <article class="card-hover group">
+          <div class="mb-4">
+            <span class="badge badge-primary">Product Update</span>
+          </div>
+          <h2 class="text-2xl font-bold mb-3 group-hover:text-primary transition">
+            <a href="/blog/new-dashboard-features/">New Dashboard Features Released</a>
+          </h2>
+          <p class="text-gray-600 mb-4">
+            We're excited to announce the release of our new dashboard features, including real-time analytics and improved order tracking.
+          </p>
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <span>March 18, 2024</span>
+            <a href="/blog/new-dashboard-features/" class="text-primary hover:text-secondary">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="card-hover group">
+          <div class="mb-4">
+            <span class="badge badge-secondary">Best Practices</span>
+          </div>
+          <h2 class="text-2xl font-bold mb-3 group-hover:text-primary transition">
+            <a href="/blog/optimize-pizza-orders/">Optimizing Pizza Orders for Speed</a>
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Learn proven strategies to reduce order preparation time and increase customer satisfaction with better workflow management.
+          </p>
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <span>March 15, 2024</span>
+            <a href="/blog/optimize-pizza-orders/" class="text-primary hover:text-secondary">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="card-hover group">
+          <div class="mb-4">
+            <span class="badge badge-primary">Case Study</span>
+          </div>
+          <h2 class="text-2xl font-bold mb-3 group-hover:text-primary transition">
+            <a href="/blog/case-study-milano/">Case Study: Milan Pizzeria Success</a>
+          </h2>
+          <p class="text-gray-600 mb-4">
+            How a traditional Milan pizzeria increased orders by 40% using ComandaPro's management tools and customer insights.
+          </p>
+          <div class="flex items-center justify-between text-sm text-gray-500">
+            <span>March 10, 2024</span>
+            <a href="/blog/case-study-milano/" class="text-primary hover:text-secondary">Read More →</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Load More -->
+      <div class="mt-12 text-center">
+        <p class="text-gray-600 mb-4">More articles coming soon...</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

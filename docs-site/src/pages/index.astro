@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Documentation">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-[#C41E3A] via-[#DC3545] to-[#F57C00] text-white py-24 lg:py-32">
+    <div class="container-wide">
+      <div class="max-w-3xl">
+        <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">ComandaPro Documentation</h1>
+        <p class="text-xl text-gray-50 mb-8 leading-relaxed">
+          Everything you need to know about managing your pizza restaurant with ComandaPro. From getting started to advanced features.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/docs/getting-started/" class="btn btn-primary inline-block text-center">Get Started</a>
+          <a href="#docs" class="btn btn-outline inline-block text-center">Browse Docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="py-16 bg-white">
+    <div class="container-wide">
+      <h2 class="text-3xl font-bold mb-12">Quick Start</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <a href="/docs/getting-started/" class="card-hover group">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🚀</div>
+          <h3 class="text-xl font-bold mb-2">Getting Started</h3>
+          <p class="text-gray-600">Set up ComandaPro in minutes and start managing orders today.</p>
+        </a>
+        <a href="/docs/features/" class="card-hover group">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">✨</div>
+          <h3 class="text-xl font-bold mb-2">Features</h3>
+          <p class="text-gray-600">Explore all the powerful features ComandaPro offers for your business.</p>
+        </a>
+        <a href="/faq/" class="card-hover group">
+          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">❓</div>
+          <h3 class="text-xl font-bold mb-2">FAQ</h3>
+          <p class="text-gray-600">Find answers to common questions about ComandaPro.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Documentation Sections -->
+  <section id="docs" class="py-16 bg-gray-50">
+    <div class="container-wide">
+      <h2 class="text-3xl font-bold mb-12">Documentation Sections</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Guides Section -->
+        <div class="card">
+          <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+            <span>📚</span> Guides
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Step-by-step guides to help you get the most out of ComandaPro.
+          </p>
+          <ul class="space-y-2">
+            <li><a href="/guides/order-management/" class="text-primary hover:text-secondary">Order Management Guide</a></li>
+            <li><a href="/guides/customer-management/" class="text-primary hover:text-secondary">Customer Management Guide</a></li>
+            <li><a href="/guides/reporting/" class="text-primary hover:text-secondary">Reporting & Analytics</a></li>
+            <li><a href="/guides/integrations/" class="text-primary hover:text-secondary">Integrations</a></li>
+          </ul>
+        </div>
+
+        <!-- API Documentation -->
+        <div class="card">
+          <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+            <span>⚙️</span> API Reference
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Complete API documentation for developers integrating ComandaPro.
+          </p>
+          <ul class="space-y-2">
+            <li><a href="/docs/api/authentication/" class="text-primary hover:text-secondary">Authentication</a></li>
+            <li><a href="/docs/api/orders/" class="text-primary hover:text-secondary">Orders API</a></li>
+            <li><a href="/docs/api/customers/" class="text-primary hover:text-secondary">Customers API</a></li>
+            <li><a href="/docs/api/webhooks/" class="text-primary hover:text-secondary">Webhooks</a></li>
+          </ul>
+        </div>
+
+        <!-- Blog Section -->
+        <div class="card">
+          <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+            <span>📝</span> Blog
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Latest articles and updates about ComandaPro and pizza business tips.
+          </p>
+          <ul class="space-y-2">
+            <li><a href="/blog/best-practices/" class="text-primary hover:text-secondary">Best Practices</a></li>
+            <li><a href="/blog/updates/" class="text-primary hover:text-secondary">Product Updates</a></li>
+            <li><a href="/blog/case-studies/" class="text-primary hover:text-secondary">Case Studies</a></li>
+            <li><a href="/blog/" class="text-primary hover:text-secondary">All Articles →</a></li>
+          </ul>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="card">
+          <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+            <span>🔧</span> Support
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Troubleshooting guides and contact information for support.
+          </p>
+          <ul class="space-y-2">
+            <li><a href="/docs/troubleshooting/" class="text-primary hover:text-secondary">Troubleshooting</a></li>
+            <li><a href="/faq/" class="text-primary hover:text-secondary">FAQ</a></li>
+            <li><a href="/changelog/" class="text-primary hover:text-secondary">Changelog</a></li>
+            <li><a href="/contact/" class="text-primary hover:text-secondary">Contact Support</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-r from-[#C41E3A] to-[#F57C00] text-white py-16">
+    <div class="container-wide text-center">
+      <h2 class="text-3xl lg:text-4xl font-bold mb-6">Ready to Master ComandaPro?</h2>
+      <p class="text-xl text-gray-50 mb-8 max-w-2xl mx-auto">
+        Start with our comprehensive guides and join thousands of pizzeria owners already using ComandaPro.
+      </p>
+      <a href="/docs/getting-started/" class="btn btn-primary inline-block">Start Learning</a>
+    </div>
+  </section>
+</BaseLayout>

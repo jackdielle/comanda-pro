@@ -1,0 +1,115 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="FAQ">
+  <!-- Hero -->
+  <section class="bg-gray-50 py-12">
+    <div class="container-wide">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">Frequently Asked Questions</h1>
+      <p class="text-xl text-gray-600">Find answers to common questions about ComandaPro.</p>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="py-16">
+    <div class="container-tight">
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>What is ComandaPro?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            ComandaPro is a comprehensive pizza restaurant management software designed to streamline order management, customer relationships, and business analytics. It helps pizzeria owners automate daily operations and make data-driven decisions.
+          </p>
+        </details>
+
+        <!-- FAQ Item 2 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>How do I get started with ComandaPro?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            Getting started is easy! Sign up for a free account, follow our onboarding guide, and you'll be managing orders within minutes. Visit our Getting Started guide for detailed instructions.
+          </p>
+        </details>
+
+        <!-- FAQ Item 3 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>Is there a free trial?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            Yes! We offer a 30-day free trial with full access to all features. No credit card required to start your trial.
+          </p>
+        </details>
+
+        <!-- FAQ Item 4 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>How secure is my data?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            We use enterprise-grade encryption and security protocols to protect your data. All data is backed up daily, and we comply with international data protection regulations.
+          </p>
+        </details>
+
+        <!-- FAQ Item 5 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>Can I integrate ComandaPro with other tools?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            Absolutely! ComandaPro integrates with popular payment processors, delivery platforms, and accounting software. Check our integrations guide for a complete list of supported services.
+          </p>
+        </details>
+
+        <!-- FAQ Item 6 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>What kind of support do you offer?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            We offer 24/7 email and phone support, comprehensive documentation, and video tutorials. Premium customers also get priority support and dedicated account managers.
+          </p>
+        </details>
+
+        <!-- FAQ Item 7 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>Can I use ComandaPro on mobile devices?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            Yes! ComandaPro works on all devices. We offer native mobile apps for iOS and Android, plus a responsive web version that works in any browser.
+          </p>
+        </details>
+
+        <!-- FAQ Item 8 -->
+        <details class="card group cursor-pointer">
+          <summary class="flex items-center justify-between font-bold text-lg text-gray-900 hover:text-primary">
+            <span>Can I switch plans anytime?</span>
+            <span class="transition group-open:rotate-180">▼</span>
+          </summary>
+          <p class="text-gray-600 mt-4">
+            Yes! You can upgrade, downgrade, or cancel your plan anytime. Changes take effect on your next billing cycle, and we'll prorate any adjustments.
+          </p>
+        </details>
+      </div>
+
+      <!-- Contact Support -->
+      <div class="mt-16 bg-gradient-to-r from-[#C41E3A] to-[#F57C00] text-white rounded-xl p-8 text-center">
+        <h3 class="text-2xl font-bold mb-3">Didn't find your answer?</h3>
+        <p class="mb-6">Contact our support team and we'll help you as soon as possible.</p>
+        <a href="/contact/" class="btn btn-primary inline-block">Get Support</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

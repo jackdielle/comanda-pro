@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <img src="assets/sliceflow-logo.png" alt="SliceFlow Logo" class="logo">
+      <p>{{ 'login.subtitle' | transloco }}</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">{{ 'login.username' | transloco }}</label>
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          formControlName="username"
+          [placeholder]="'login.username' | transloco"
+          [disabled]="loading"
+        />
+        <div class="error-message" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+          {{ 'login.usernameRequired' | transloco }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'login.password' | transloco }}</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          [placeholder]="'login.password' | transloco"
+          [disabled]="loading"
+        />
+        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          {{ 'login.passwordRequired' | transloco }}
+        </div>
+      </div>
+
+      <div class="error-banner" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <span *ngIf="!loading">{{ 'login.signIn' | transloco }}</span>
+        <span *ngIf="loading">
+          <span class="spinner"></span> {{ 'login.signingIn' | transloco }}
+        </span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>{{ 'login.defaultCredentials' | transloco }}</p>
+      <p><strong>{{ 'login.username' | transloco }}:</strong> admin</p>
+      <p><strong>{{ 'login.password' | transloco }}:</strong> admin123</p>
+      <p style="margin-top: 10px; font-size: 12px; color: #666;">
+        {{ 'login.changePassword' | transloco }}
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="space-y-8">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ 'dashboard.title' | transloco }}</h1>
+    <p class="text-gray-600">{{ 'dashboard.summary' | transloco }}</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pizza-red"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+    {{ error }}
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="summary && !loading" class="space-y-8">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Total Orders -->
+      <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-pizza-red">
+        <div class="text-gray-500 text-sm font-semibold">{{ 'dashboard.totalOrders' | transloco }}</div>
+        <div class="text-3xl font-bold text-gray-800 mt-2">{{ summary.totalOrders }}</div>
+      </div>
+
+      <!-- Total Revenue -->
+      <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-pizza-green">
+        <div class="text-gray-500 text-sm font-semibold">{{ 'dashboard.totalRevenue' | transloco }}</div>
+        <div class="text-3xl font-bold text-gray-800 mt-2">€ {{ formattedRevenue }}</div>
+      </div>
+
+      <!-- Average Order -->
+      <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
+        <div class="text-gray-500 text-sm font-semibold">{{ 'dashboard.averageOrder' | transloco }}</div>
+        <div class="text-3xl font-bold text-gray-800 mt-2">
+          € {{ summary.totalOrders > 0 ? (summary.totalRevenue / summary.totalOrders).toFixed(2) : '0.00' }}
+        </div>
+      </div>
+
+      <!-- Active Orders -->
+      <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+        <div class="text-gray-500 text-sm font-semibold">{{ 'dashboard.activeOrders' | transloco }}</div>
+        <div class="text-3xl font-bold text-gray-800 mt-2">
+          {{ (summary.ordersByStatus['IN_PREPARAZIONE'] || 0) + (summary.ordersByStatus['PRONTO'] || 0) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Counts -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-6">{{ 'dashboard.productSummary' | transloco }}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="text-center p-4 bg-orange-50 rounded-lg">
+          <div class="text-2xl font-bold text-pizza-red">{{ summary.totalClassic }}</div>
+          <div class="text-sm text-gray-600 mt-1">{{ 'dashboard.classicPizzas' | transloco }}</div>
+        </div>
+        <div class="text-center p-4 bg-green-50 rounded-lg">
+          <div class="text-2xl font-bold text-pizza-green">{{ summary.totalPanozzi }}</div>
+          <div class="text-sm text-gray-600 mt-1">{{ 'dashboard.panozzi' | transloco }}</div>
+        </div>
+        <div class="text-center p-4 bg-purple-50 rounded-lg">
+          <div class="text-2xl font-bold text-purple-600">{{ summary.totalRolled }}</div>
+          <div class="text-sm text-gray-600 mt-1">{{ 'dashboard.rolled' | transloco }}</div>
+        </div>
+        <div class="text-center p-4 bg-pink-50 rounded-lg">
+          <div class="text-2xl font-bold text-pink-600">{{ summary.totalPinse }}</div>
+          <div class="text-sm text-gray-600 mt-1">{{ 'dashboard.pinse' | transloco }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Status Breakdown -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-6">{{ 'dashboard.orderStatus' | transloco }}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="p-4 bg-blue-50 rounded-lg text-center">
+          <div class="text-2xl font-bold text-blue-600">{{ summary.ordersByStatus['IN_PREPARAZIONE'] || 0 }}</div>
+          <div class="text-xs text-gray-600 mt-1">{{ 'orders.inPreparation' | transloco }}</div>
+        </div>
+        <div class="p-4 bg-green-50 rounded-lg text-center">
+          <div class="text-2xl font-bold text-green-600">{{ summary.ordersByStatus['PRONTO'] || 0 }}</div>
+          <div class="text-xs text-gray-600 mt-1">{{ 'orders.ready' | transloco }}</div>
+        </div>
+        <div class="p-4 bg-yellow-50 rounded-lg text-center">
+          <div class="text-2xl font-bold text-yellow-600">{{ summary.ordersByStatus['IN_CONSEGNA'] || 0 }}</div>
+          <div class="text-xs text-gray-600 mt-1">{{ 'orders.inDelivery' | transloco }}</div>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg text-center">
+          <div class="text-2xl font-bold text-gray-700">{{ summary.ordersByStatus['CONSEGNATO'] || 0 }}</div>
+          <div class="text-xs text-gray-600 mt-1">{{ 'orders.delivered' | transloco }}</div>
+        </div>
+        <div class="p-4 bg-red-50 rounded-lg text-center">
+          <div class="text-2xl font-bold text-red-600">{{ summary.ordersByStatus['ANNULLATO'] || 0 }}</div>
+          <div class="text-xs text-gray-600 mt-1">{{ 'orders.cancelled' | transloco }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

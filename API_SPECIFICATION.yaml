@@ -1,0 +1,603 @@
+openapi: 3.0.0
+info:
+  title: Gestore Comande API
+  description: API per gestione ordini pizzeria Sale e Origano
+  version: 2.0.0
+  contact:
+    name: Support Team
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080/api
+    description: Development Server
+  - url: https://api.saleorigano.com/api
+    description: Production Server
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      tags:
+        - System
+      responses:
+        '200':
+          description: API is running
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /clienti:
+    post:
+      summary: Crea un nuovo cliente
+      tags:
+        - Clienti
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInput'
+      responses:
+        '201':
+          description: Cliente creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        '400':
+          description: Dati non validi
+        '409':
+          description: Cliente già esiste
+
+    get:
+      summary: Elenca tutti i clienti
+      tags:
+        - Clienti
+      responses:
+        '200':
+          description: Lista clienti
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+
+  /clienti/{id}:
+    get:
+      summary: Ottieni dettagli cliente
+      tags:
+        - Clienti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dettagli cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        '404':
+          description: Cliente non trovato
+
+    put:
+      summary: Aggiorna cliente
+      tags:
+        - Clienti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInput'
+      responses:
+        '200':
+          description: Cliente aggiornato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+
+    delete:
+      summary: Elimina cliente
+      tags:
+        - Clienti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Cliente eliminato
+
+  /clienti/telefono/{numeroTelefono}:
+    get:
+      summary: Cerca cliente per telefono
+      tags:
+        - Clienti
+      parameters:
+        - name: numeroTelefono
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cliente trovato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        '404':
+          description: Cliente non trovato
+
+  /prodotti:
+    post:
+      summary: Crea nuovo prodotto
+      tags:
+        - Prodotti
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdottoInput'
+      responses:
+        '201':
+          description: Prodotto creato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+
+    get:
+      summary: Elenca tutti i prodotti
+      tags:
+        - Prodotti
+      responses:
+        '200':
+          description: Lista prodotti
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prodotto'
+
+  /prodotti/{id}:
+    get:
+      summary: Ottieni dettagli prodotto
+      tags:
+        - Prodotti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dettagli prodotto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+
+    put:
+      summary: Aggiorna prodotto
+      tags:
+        - Prodotti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdottoInput'
+      responses:
+        '200':
+          description: Prodotto aggiornato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prodotto'
+
+    delete:
+      summary: Elimina prodotto
+      tags:
+        - Prodotti
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Prodotto eliminato
+
+  /prodotti/categoria/{categoria}:
+    get:
+      summary: Ottieni prodotti per categoria
+      tags:
+        - Prodotti
+      parameters:
+        - name: categoria
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [CLASSICHE, SPECIALI, PINSE, PANOZZI, ARROTOLATI, FRITTI, BEVANDE, DOLCI]
+      responses:
+        '200':
+          description: Prodotti della categoria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prodotto'
+
+  /ordini:
+    post:
+      summary: Crea nuovo ordine
+      tags:
+        - Ordini
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdineInput'
+      responses:
+        '201':
+          description: Ordine creato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ordine'
+
+    get:
+      summary: Elenca tutti gli ordini
+      tags:
+        - Ordini
+      responses:
+        '200':
+          description: Lista ordini
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ordine'
+
+  /ordini/{id}:
+    get:
+      summary: Ottieni dettagli ordine
+      tags:
+        - Ordini
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dettagli ordine
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ordine'
+
+    delete:
+      summary: Elimina ordine
+      tags:
+        - Ordini
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ordine eliminato
+
+  /ordini/{id}/stato/{stato}:
+    put:
+      summary: Aggiorna stato ordine
+      tags:
+        - Ordini
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: stato
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [IN_PREPARAZIONE, PRONTO, IN_CONSEGNA, CONSEGNATO, ANNULLATO]
+      responses:
+        '200':
+          description: Stato aggiornato
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ordine'
+
+  /ordini/cliente/{clienteId}:
+    get:
+      summary: Ordini per cliente
+      tags:
+        - Ordini
+      parameters:
+        - name: clienteId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ordini del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ordine'
+
+  /ordini/stato/{stato}:
+    get:
+      summary: Ordini per stato
+      tags:
+        - Ordini
+      parameters:
+        - name: stato
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [IN_PREPARAZIONE, PRONTO, IN_CONSEGNA, CONSEGNATO, ANNULLATO]
+      responses:
+        '200':
+          description: Ordini con stato specificato
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ordine'
+
+  /ordini/riepilogo/totali:
+    get:
+      summary: Riepilogo ordini totali
+      tags:
+        - Ordini
+      responses:
+        '200':
+          description: Riepilogo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiepilogoOrdini'
+
+components:
+  schemas:
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+        numeroTelefono:
+          type: string
+        nominativo:
+          type: string
+        indirizzo:
+          type: string
+        citofono:
+          type: string
+        zona:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+
+    ClienteInput:
+      type: object
+      required:
+        - numeroTelefono
+        - nominativo
+        - indirizzo
+        - zona
+      properties:
+        numeroTelefono:
+          type: string
+        nominativo:
+          type: string
+        indirizzo:
+          type: string
+        citofono:
+          type: string
+        zona:
+          type: string
+
+    Prodotto:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        prezzo:
+          type: number
+          format: double
+        categoria:
+          type: string
+          enum: [CLASSICHE, SPECIALI, PINSE, PANOZZI, ARROTOLATI, FRITTI, BEVANDE, DOLCI]
+        disponibile:
+          type: boolean
+
+    ProdottoInput:
+      type: object
+      required:
+        - nome
+        - prezzo
+        - categoria
+      properties:
+        nome:
+          type: string
+        prezzo:
+          type: number
+          format: double
+        categoria:
+          type: string
+          enum: [CLASSICHE, SPECIALI, PINSE, PANOZZI, ARROTOLATI, FRITTI, BEVANDE, DOLCI]
+        disponibile:
+          type: boolean
+
+    RigaOrdine:
+      type: object
+      properties:
+        id:
+          type: integer
+        prodottoId:
+          type: integer
+        nomeProdotto:
+          type: string
+        categoriaProdotto:
+          type: string
+        quantita:
+          type: integer
+        prezzoUnitario:
+          type: number
+          format: double
+        subtotale:
+          type: number
+          format: double
+        note:
+          type: string
+        siPinsa:
+          type: boolean
+        noLattosio:
+          type: boolean
+
+    RigaOrdineInput:
+      type: object
+      required:
+        - prodottoId
+        - quantita
+      properties:
+        prodottoId:
+          type: integer
+        quantita:
+          type: integer
+        note:
+          type: string
+        siPinsa:
+          type: boolean
+        noLattosio:
+          type: boolean
+
+    Ordine:
+      type: object
+      properties:
+        id:
+          type: integer
+        cliente:
+          $ref: '#/components/schemas/Cliente'
+        righe:
+          type: array
+          items:
+            $ref: '#/components/schemas/RigaOrdine'
+        totale:
+          type: number
+          format: double
+        stato:
+          type: string
+          enum: [IN_PREPARAZIONE, PRONTO, IN_CONSEGNA, CONSEGNATO, ANNULLATO]
+        orarioConsegna:
+          type: string
+        note:
+          type: string
+        countClassiche:
+          type: integer
+        countPanozzi:
+          type: integer
+        countArrotolati:
+          type: integer
+        countPinse:
+          type: integer
+        createdAt:
+          type: integer
+          format: int64
+
+    OrdineInput:
+      type: object
+      required:
+        - cliente
+        - righe
+      properties:
+        cliente:
+          $ref: '#/components/schemas/ClienteInput'
+        righe:
+          type: array
+          items:
+            $ref: '#/components/schemas/RigaOrdineInput'
+        orarioConsegna:
+          type: string
+        note:
+          type: string
+
+    RiepilogoOrdini:
+      type: object
+      properties:
+        totalOrdini:
+          type: integer
+        incassoTotale:
+          type: number
+          format: double
+        totalClassiche:
+          type: integer
+        totalPanozzi:
+          type: integer
+        totalArrotolati:
+          type: integer
+        totalPinse:
+          type: integer
+        ordiniPerStato:
+          type: object
+          additionalProperties:
+            type: integer
+
+tags:
+  - name: System
+    description: System health checks
+  - name: Clienti
+    description: Gestione clienti
+  - name: Prodotti
+    description: Gestione prodotti
+  - name: Ordini
+    description: Gestione ordini

@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Guides">
+  <!-- Hero -->
+  <section class="bg-gray-50 py-12">
+    <div class="container-wide">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">Guides & Tutorials</h1>
+      <p class="text-xl text-gray-600">Step-by-step tutorials to help you master ComandaPro.</p>
+    </div>
+  </section>
+
+  <!-- Guides Grid -->
+  <section class="py-16">
+    <div class="container-wide">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Guide 1 -->
+        <a href="/guides/order-management/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">📦</span>
+            <div>
+              <h3 class="text-2xl font-bold">Order Management</h3>
+              <span class="text-sm text-gray-500">5 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Learn how to manage orders efficiently from creation to delivery tracking.
+          </p>
+        </a>
+
+        <!-- Guide 2 -->
+        <a href="/guides/customer-management/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">👥</span>
+            <div>
+              <h3 class="text-2xl font-bold">Customer Management</h3>
+              <span class="text-sm text-gray-500">5 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Build customer relationships with preference tracking and loyalty programs.
+          </p>
+        </a>
+
+        <!-- Guide 3 -->
+        <a href="/guides/reporting/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">📊</span>
+            <div>
+              <h3 class="text-2xl font-bold">Analytics & Reporting</h3>
+              <span class="text-sm text-gray-500">7 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Understand your business metrics with comprehensive analytics dashboards.
+          </p>
+        </a>
+
+        <!-- Guide 4 -->
+        <a href="/guides/integrations/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">🔗</span>
+            <div>
+              <h3 class="text-2xl font-bold">Integrations</h3>
+              <span class="text-sm text-gray-500">6 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Connect ComandaPro with your favorite third-party tools and services.
+          </p>
+        </a>
+
+        <!-- Guide 5 -->
+        <a href="/guides/team-management/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">👔</span>
+            <div>
+              <h3 class="text-2xl font-bold">Team Management</h3>
+              <span class="text-sm text-gray-500">5 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Set up your team, manage roles, and track staff performance.
+          </p>
+        </a>
+
+        <!-- Guide 6 -->
+        <a href="/guides/security/" class="card-hover">
+          <div class="flex items-center gap-4 mb-4">
+            <span class="text-4xl">🔐</span>
+            <div>
+              <h3 class="text-2xl font-bold">Security & Backup</h3>
+              <span class="text-sm text-gray-500">5 minutes read</span>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            Protect your data with security best practices and automated backups.
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

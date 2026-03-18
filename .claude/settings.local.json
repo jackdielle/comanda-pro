@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/tmp/translation_summary.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(cd \"C:\\\\Users\\\\GiacomoDiLoreto\\\\Desktop\\\\GestoreComande_v2\\\\backend\" && sed -i '/<\\\\/release>$/a\\\\t\\\\t\\\\t<\\\\/configuration>' pom.xml && sed -i '/^[[:space:]]*$/N;/^\\\\n$/!P;D' pom.xml)",
+      "Bash(cd \"C:\\\\Users\\\\GiacomoDiLoreto\\\\Desktop\\\\GestoreComande_v2\\\\backend\" && mvn clean compile 2>&1 | tail -30)",
+      "Bash(cd \"C:\\\\Users\\\\GiacomoDiLoreto\\\\Desktop\\\\GestoreComande_v2\\\\backend\" && mvn clean compile 2>&1 | tail -20)",
+      "Bash(cd \"C:\\\\Users\\\\GiacomoDiLoreto\\\\Desktop\\\\GestoreComande_v2\\\\backend\" && mvn clean compile -q && echo \"✅ Backend compiles successfully\")",
+      "Bash(ls -la \"C:\\\\Users\\\\GiacomoDiLoreto\\\\Desktop\\\\GestoreComande_v2\\\\frontend\\\\src\\\\assets\\\\\" 2>/dev/null || echo \"Assets folder not found\")",
+      "Bash(cd /c/Users/GiacomoDiLoreto/Desktop/GestoreComande_v2/frontend && npm install @ngx-translate/core @ngx-translate/http-loader --save)",
+      "Bash(node -e \"const fs = require\\('fs'\\); const en = JSON.parse\\(fs.readFileSync\\('src/assets/i18n/en.json', 'utf8'\\)\\); const it = JSON.parse\\(fs.readFileSync\\('src/assets/i18n/it.json', 'utf8'\\)\\); console.log\\('✓ en.json is valid'\\); console.log\\('✓ it.json is valid'\\); console.log\\('English keys:', Object.keys\\(en\\).join\\(', '\\)\\); console.log\\('Italian keys:', Object.keys\\(it\\).join\\(', '\\)\\);\")",
+      "Bash(for file:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/GiacomoDiLoreto/Desktop/GestoreComande_v2/frontend/**)",
+      "Bash(done)",
+      "Bash(cat << 'EOF'\nVERIFICATION CHECKLIST:\n\n✓ All 5 HTML files updated with translate pipes\n✓ All 5 TypeScript components updated with TranslateModule import\n✓ Translation JSON files \\(en.json, it.json\\) validated and complete\n✓ 114 total translate pipes applied across all files\n✓ Translation keys organized by module: orders, newOrder, customers, products, common\n\nCONTENT COVERAGE:\n\nView Orders Page:\n✓ Page title and description\n✓ Filter labels\n✓ Table headers\n✓ Empty state messages\n✓ Modal titles and labels\n✓ Button text\n\nNew Order Page:\n✓ Page title and description\n✓ Delivery type selection labels\n✓ Customer section labels and placeholders\n✓ Product selection labels\n✓ Special options \\(Pinsa, No Lactose\\)\n✓ Extras section\n✓ Notes section\n✓ Price preview labels\n✓ Summary section\n✓ Delivery and notes sections\n✓ Button labels\n\nManage Customers Page:\n✓ Page title and description\n✓ Add button label\n✓ Table headers\n✓ Form modal titles\n✓ Form field labels\n✓ Action buttons\n✓ Empty state message\n\nManage Products Page:\n✓ Page title and description\n✓ Add button label\n✓ Category headers\n✓ Table headers\n✓ Product availability labels\n✓ Form modal titles\n✓ Form field labels\n✓ Action buttons\n✓ Empty state message\n\nReady for deployment!\nEOF)",
+      "Bash(grep -r \"| translate\" /c/Users/GiacomoDiLoreto/Desktop/GestoreComande_v2/frontend/src/app --include=\"*.html\" --include=\"*.ts\" 2>/dev/null | head -20)",
+      "Bash(grep -r \"transloco\" /c/Users/GiacomoDiLoreto/Desktop/GestoreComande_v2/frontend/src/app --include=\"*.html\" 2>/dev/null | wc -l)",
+      "Bash(grep -r \"from '../../pipes/translate.pipe'\" /c/Users/GiacomoDiLoreto/Desktop/GestoreComande_v2/frontend/src/app --include=\"*.ts\" 2>/dev/null)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm start:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(lsof -i :4200 2>/dev/null || netstat -ano | grep 4200 || echo \"Port 4200 appears to be free\")",
+      "Bash(sleep 10 && lsof -i :4200 2>/dev/null | head -3 || netstat -ano | grep 4200 | head -3 || echo \"Waiting for server to start...\")",
+      "Bash(netstat -ano)",
+      "Bash(cmd /c \"taskkill /PID 36468 /F\" 2>&1 || true; sleep 3)",
+      "Bash(powershell -Command \"Stop-Process -Id 36468 -Force\" 2>&1 || true; sleep 3)",
+      "Bash(xargs -r powershell -Command \"param\\([int]$pid\\) Stop-Process -Id $pid -Force\")",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 4200 -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue\" 2>&1; sleep 2; netstat -ano | grep 4200 | grep LISTEN || echo \"Port 4200 is now free\")",
+      "Bash(powershell -Command \"Stop-Process -Id 3256 -Force\" 2>&1; sleep 2; netstat -ano | grep 4200 | grep LISTEN || echo \"✓ Port 4200 is now free\")",
+      "Bash(npx skills:*)",
+      "Bash(git reset:*)",
+      "Bash(git rm:*)"
+    ]
+  }
+}
