@@ -320,13 +320,22 @@
                                   rows="2"></textarea>
                     </div>
 
-                    <!-- Payment Method -->
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" [(ngModel)]="paymentMethodIsCreditCard" id="paymentMethod"
-                               class="w-4 h-4 text-pizza-red rounded focus:ring-2 focus:ring-pizza-red cursor-pointer" />
-                        <label for="paymentMethod" class="text-sm font-medium text-gray-700 cursor-pointer">
+                    <!-- Payment Method Toggle -->
+                    <div class="flex items-center gap-2 bg-gray-100 rounded-full p-1 w-fit">
+                        <button (click)="paymentMethodIsCreditCard = false"
+                                [class.bg-white]="!paymentMethodIsCreditCard"
+                                [class.shadow]="!paymentMethodIsCreditCard"
+                                class="px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
+                                [ngClass]="!paymentMethodIsCreditCard ? 'text-gray-900' : 'text-gray-600'">
+                            {{ 'newOrder.cash' | transloco }}
+                        </button>
+                        <button (click)="paymentMethodIsCreditCard = true"
+                                [class.bg-white]="paymentMethodIsCreditCard"
+                                [class.shadow]="paymentMethodIsCreditCard"
+                                class="px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
+                                [ngClass]="paymentMethodIsCreditCard ? 'text-gray-900' : 'text-gray-600'">
                             {{ 'newOrder.pos' | transloco }}
-                        </label>
+                        </button>
                     </div>
                 </div>
 
