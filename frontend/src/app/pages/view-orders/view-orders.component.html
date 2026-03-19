@@ -108,7 +108,7 @@
         <div>
           <h3 class="font-bold text-gray-800 mb-3">{{ 'orders.orderedProducts' | transloco }}</h3>
           <div class="space-y-2 max-h-48 overflow-y-auto">
-            <div *ngFor="let row of selectedOrder.rows" class="bg-gray-50 p-3 rounded flex justify-between">
+            <div *ngFor="let row of selectedOrder.lines" class="bg-gray-50 p-3 rounded flex justify-between">
               <div class="text-sm">
                 <div class="font-semibold">{{ row.quantity }}x {{ row.productName }}</div>
                 <div class="text-gray-600 text-xs">{{ row.productCategory }}</div>

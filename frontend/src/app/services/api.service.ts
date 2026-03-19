@@ -39,7 +39,7 @@ export interface OrderRow {
 export interface Order {
   id?: number;
   customer: Customer;
-  rows: OrderRow[];
+  lines: OrderRow[];
   total?: number;
   status?: string;
   deliveryTime?: string;

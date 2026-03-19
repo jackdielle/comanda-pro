@@ -406,7 +406,7 @@ export class NewOrderComponent implements OnInit {
 
     const order: Order = {
       customer: this.selectedCustomer,
-      rows: this.orderRows,
+      lines: this.orderRows,
       deliveryTime: this.deliveryTime,
       notes: this.orderNotes,
       status: 'IN_PREPARAZIONE'
