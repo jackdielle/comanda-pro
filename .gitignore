@@ -1,7 +1,6 @@
 # Dependencies
 docs-site/node_modules/
 **/node_modules/
-package-lock.json
 yarn.lock
 
 # Build & Cache
@@ -13,6 +12,9 @@ backend/target/
 # Build outputs
 dist/
 build/
+**/dist/
+frontend/dist/
+backend/dist/
 
 # Environment
 .env
