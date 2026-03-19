@@ -13,6 +13,7 @@ import com.saleorigano.repository.OrderRepository;
 import com.saleorigano.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional

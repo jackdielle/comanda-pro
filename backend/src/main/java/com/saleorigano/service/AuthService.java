@@ -32,50 +32,82 @@ public class AuthService {
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
+        log.info("=== LOGIN ATTEMPT === Username: {}", request.getUsername());
+
+        log.debug("Step 1: Looking up user in database");
         AppUser user = userRepository.findByUsername(request.getUsername())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> {
+                log.error("User not found: {}", request.getUsername());
+                return new RuntimeException("User not found");
+            });
+        log.info("Step 2: User found - ID: {}, Role: {}", user.getId(), user.getRole());
 
         if (!user.getEnabled()) {
+            log.error("User account disabled: {}", request.getUsername());
             throw new RuntimeException("User account is disabled");
         }
+        log.debug("Step 3: User account is enabled");
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            log.error("Invalid password for user: {}", request.getUsername());
             throw new RuntimeException("Invalid credentials");
         }
+        log.debug("Step 4: Password verified");
 
+        log.debug("Step 5: Generating JWT tokens");
         String accessToken = jwtService.generateAccessToken(user.getUsername(), user.getId(), user.getRole().toString());
         RefreshToken refreshToken = createRefreshToken(user);
+        log.info("Step 6: Tokens generated successfully");
 
-        return AuthResponse.builder()
+        AuthResponse response = AuthResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken.getToken())
             .username(user.getUsername())
             .role(user.getRole().toString())
             .userId(user.getId())
             .build();
+
+        log.info("=== LOGIN SUCCESS === User: {} logged in", request.getUsername());
+        return response;
     }
 
     @Transactional
     public AuthResponse refresh(String refreshTokenString) {
+        log.info("=== TOKEN REFRESH ATTEMPT ===");
+        log.debug("Step 1: Looking up refresh token");
+
         RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenString)
-            .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+            .orElseThrow(() -> {
+                log.error("Refresh token not found in database");
+                return new RuntimeException("Invalid refresh token");
+            });
+        log.debug("Step 2: Refresh token found");
 
         if (refreshToken.getRevoked() || refreshToken.isExpired()) {
+            log.error("Refresh token is revoked or expired - Revoked: {}, Expired: {}",
+                refreshToken.getRevoked(), refreshToken.isExpired());
             throw new RuntimeException("Refresh token is revoked or expired");
         }
+        log.debug("Step 3: Refresh token is valid");
 
         AppUser user = refreshToken.getUser();
+        log.debug("Step 4: User found - Username: {}", user.getUsername());
+
         if (!user.getEnabled()) {
+            log.error("User account disabled: {}", user.getUsername());
             throw new RuntimeException("User account is disabled");
         }
 
         // Revoke old refresh token and create new one (token rotation)
+        log.debug("Step 5: Revoking old refresh token");
         refreshToken.setRevoked(true);
         refreshTokenRepository.save(refreshToken);
 
+        log.debug("Step 6: Generating new tokens");
         String accessToken = jwtService.generateAccessToken(user.getUsername(), user.getId(), user.getRole().toString());
         RefreshToken newRefreshToken = createRefreshToken(user);
 
+        log.info("=== TOKEN REFRESH SUCCESS === User: {}", user.getUsername());
         return AuthResponse.builder()
             .accessToken(accessToken)
             .refreshToken(newRefreshToken.getToken())

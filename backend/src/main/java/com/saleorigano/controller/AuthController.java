@@ -7,7 +7,6 @@ import com.saleorigano.dto.RefreshRequest;
 import com.saleorigano.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +23,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+        log.info("Login attempt for user: {}", request.getUsername());
+        try {
+            AuthResponse response = authService.login(request);
+            log.info("Login successful for user: {}", request.getUsername());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Login failed for user: {}", request.getUsername(), e);
+            throw e;
+        }
     }
 
     @PostMapping("/refresh")

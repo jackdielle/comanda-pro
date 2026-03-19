@@ -4,11 +4,13 @@ import com.saleorigano.dto.ProductDTO;
 import com.saleorigano.model.Product;
 import com.saleorigano.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
