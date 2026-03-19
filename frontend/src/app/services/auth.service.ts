@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, interval, Subject } from 'rxjs';
-import { tap, catchError, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface AuthUser {
   username: string;
@@ -35,7 +36,7 @@ export interface ChangePasswordRequest {
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-  private apiUrl = '/api';
+  private apiUrl = environment.apiUrl;
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private destroy$ = new Subject<void>();
