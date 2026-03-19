@@ -44,19 +44,19 @@
         <tr *ngFor="let order of filterOrders()" class="hover:bg-gray-50 transition">
           <td class="px-6 py-4 text-sm font-semibold text-gray-800">#{{ order.id }}</td>
           <td class="px-6 py-4 text-sm" [ngClass]="shouldShowCustomer(order) ? 'text-gray-800' : 'text-gray-400'">
-            <span *ngIf="shouldShowCustomer(order)">{{ order.customer?.name }}</span>
+            <span *ngIf="shouldShowCustomer(order)">{{ order.customer!.name }}</span>
             <span *ngIf="!shouldShowCustomer(order)" class="italic">{{ 'common.archived' | transloco }}</span>
           </td>
           <td class="px-6 py-4 text-sm text-gray-600">
-            <span *ngIf="shouldShowCustomer(order)">{{ order.customer?.phoneNumber }}</span>
+            <span *ngIf="shouldShowCustomer(order)">{{ order.customer!.phoneNumber }}</span>
             <span *ngIf="!shouldShowCustomer(order)" class="text-gray-400">-</span>
           </td>
           <td class="px-6 py-4 text-sm text-gray-700">
             <div class="text-xs space-y-1">
-              <div *ngIf="order.countClassic > 0" class="text-orange-700">{{ order.countClassic }}x {{ 'dashboard.classicPizzas' | transloco }}</div>
-              <div *ngIf="order.countPanozzi > 0" class="text-green-700">{{ order.countPanozzi }}x {{ 'dashboard.panozzi' | transloco }}</div>
-              <div *ngIf="order.countRolled > 0" class="text-purple-700">{{ order.countRolled }}x {{ 'dashboard.rolled' | transloco }}</div>
-              <div *ngIf="order.countPinse > 0" class="text-pink-700">{{ order.countPinse }}x {{ 'dashboard.pinse' | transloco }}</div>
+              <div *ngIf="(order.countClassic || 0) > 0" class="text-orange-700">{{ order.countClassic }}x {{ 'dashboard.classicPizzas' | transloco }}</div>
+              <div *ngIf="(order.countPanozzi || 0) > 0" class="text-green-700">{{ order.countPanozzi }}x {{ 'dashboard.panozzi' | transloco }}</div>
+              <div *ngIf="(order.countRolled || 0) > 0" class="text-purple-700">{{ order.countRolled }}x {{ 'dashboard.rolled' | transloco }}</div>
+              <div *ngIf="(order.countPinse || 0) > 0" class="text-pink-700">{{ order.countPinse }}x {{ 'dashboard.pinse' | transloco }}</div>
             </div>
           </td>
           <td class="px-6 py-4 text-sm font-bold text-pizza-red">€{{ order.total?.toFixed(2) }}</td>
@@ -87,7 +87,7 @@
       <div class="bg-gradient-to-r from-pizza-red to-red-600 text-white p-6 flex justify-between items-center">
         <div>
           <h2 class="text-2xl font-bold">Order #{{ selectedOrder.id }}</h2>
-          <p class="text-sm mt-1">{{ selectedOrder.customer?.name || ('common.archived' | transloco) }}</p>
+          <p class="text-sm mt-1">{{ selectedOrder.customer?.name ?? ('common.archived' | transloco) }}</p>
         </div>
         <button (click)="closeDetails()" class="text-white hover:opacity-80 text-2xl font-bold">
           ✕
@@ -102,19 +102,19 @@
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span class="text-gray-600">{{ 'customers.name' | transloco }}:</span>
-              <div class="font-semibold">{{ selectedOrder.customer?.name }}</div>
+              <div class="font-semibold">{{ selectedOrder.customer!.name }}</div>
             </div>
             <div>
               <span class="text-gray-600">{{ 'customers.phone' | transloco }}:</span>
-              <div class="font-semibold">{{ selectedOrder.customer?.phoneNumber }}</div>
+              <div class="font-semibold">{{ selectedOrder.customer!.phoneNumber }}</div>
             </div>
             <div>
               <span class="text-gray-600">{{ 'customers.address' | transloco }}:</span>
-              <div class="font-semibold">{{ selectedOrder.customer?.address }}</div>
+              <div class="font-semibold">{{ selectedOrder.customer!.address }}</div>
             </div>
             <div>
               <span class="text-gray-600">{{ 'customers.zone' | transloco }}:</span>
-              <div class="font-semibold">{{ selectedOrder.customer?.zone }}</div>
+              <div class="font-semibold">{{ selectedOrder.customer!.zone }}</div>
             </div>
           </div>
         </div>
