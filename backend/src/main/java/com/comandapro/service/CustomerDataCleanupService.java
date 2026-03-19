@@ -23,9 +23,10 @@ public class CustomerDataCleanupService {
 
     /**
      * Removes customer data from orders older than today at 00:00
-     * Runs daily at 01:00 AM (3600000 ms = 1 hour after midnight)
+     * Runs daily at 01:00 AM
+     * Cron format: second minute hour day-of-month month day-of-week
      */
-    @Scheduled(cron = "0 1 * * *") // 01:00 AM every day
+    @Scheduled(cron = "0 0 1 * * *") // 01:00 AM every day
     public void removeOldCustomerData() {
         log.info("Starting customer data cleanup...");
 
