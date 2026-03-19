@@ -290,6 +290,7 @@ public class OrderService {
             .countPinse(order.getCountPinse())
             .createdAt(order.getCreatedAt())
             .paymentMethod(order.getPaymentMethod())
+            .customerDataRemoved(order.getCustomerDataRemoved())
             .build();
     }
 

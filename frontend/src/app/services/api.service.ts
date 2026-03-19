@@ -50,6 +50,7 @@ export interface Order {
   countPinse?: number;
   createdAt?: number;
   paymentMethod?: string;
+  customerDataRemoved?: boolean;
 }
 
 export interface OrdersSummary {

@@ -25,4 +25,5 @@ public class OrderDTO {
     private Integer countPinse;
     private Long createdAt;
     private String paymentMethod;
+    private Boolean customerDataRemoved;
 }

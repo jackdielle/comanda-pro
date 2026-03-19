@@ -55,7 +55,8 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   shouldShowCustomer(order: Order): boolean {
-    return this.isOrderFromToday(order.createdAt);
+    // Show customer info only if data hasn't been removed
+    return !order.customerDataRemoved;
   }
 
   openDetails(order: Order): void {

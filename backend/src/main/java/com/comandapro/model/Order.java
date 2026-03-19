@@ -69,6 +69,10 @@ public class Order {
     @Builder.Default
     private String paymentMethod = "CASH"; // CASH or CREDIT_CARD
 
+    @Column(name = "customer_data_removed")
+    @Builder.Default
+    private Boolean customerDataRemoved = false;
+
     public enum OrderStatus {
         IN_PREPARATION("In Preparation"),
         READY("Ready"),
