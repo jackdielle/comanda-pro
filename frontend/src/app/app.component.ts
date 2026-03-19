@@ -13,7 +13,7 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Gestore Comande - Sale e Origano';
+  title = 'ComandaPro - Gestione Comande';
 
   constructor(
     public authService: AuthService,

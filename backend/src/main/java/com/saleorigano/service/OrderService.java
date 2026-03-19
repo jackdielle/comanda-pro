@@ -102,8 +102,8 @@ public class OrderService {
         LocalDateTime dateTime = LocalDateTime.now();
 
         sb.append("╔════════════════════════════════════╗\n");
-        sb.append("║    ORDERS MANAGER - ORDER          ║\n");
-        sb.append("║        Sale e Origano Pizza        ║\n");
+        sb.append("║        COMANDA PRO - ORDER         ║\n");
+        sb.append("║                                    ║\n");
         sb.append("╚════════════════════════════════════╝\n\n");
 
         sb.append("ORDER #").append(order.getId()).append("\n");
