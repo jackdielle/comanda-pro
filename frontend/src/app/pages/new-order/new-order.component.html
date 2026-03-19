@@ -325,7 +325,7 @@
                         <input type="checkbox" [(ngModel)]="paymentMethodIsCreditCard" id="paymentMethod"
                                class="w-4 h-4 text-pizza-red rounded focus:ring-2 focus:ring-pizza-red cursor-pointer" />
                         <label for="paymentMethod" class="text-sm font-medium text-gray-700 cursor-pointer">
-                            {{ paymentMethodIsCreditCard ? ('newOrder.creditCard' | transloco) : ('newOrder.cash' | transloco) }}
+                            {{ 'newOrder.pos' | transloco }}
                         </label>
                     </div>
                 </div>

@@ -134,8 +134,7 @@
     "orderNotes": "Note Ordine",
     "additionalNotes": "Note aggiuntive...",
     "saveOrder": "Salva Ordine",
-    "cash": "Contanti",
-    "creditCard": "Carta di Credito (POS)"
+    "pos": "POS"
   },
   "customers": {
     "title": "Clienti",
