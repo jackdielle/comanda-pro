@@ -55,8 +55,8 @@ export class ViewOrdersComponent implements OnInit {
   }
 
   shouldShowCustomer(order: Order): boolean {
-    // Show customer info only if data hasn't been removed
-    return !order.customerDataRemoved;
+    // Show customer info only if customer data exists and hasn't been removed
+    return order.customer != null && !order.customerDataRemoved;
   }
 
   openDetails(order: Order): void {

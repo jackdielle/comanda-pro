@@ -41,14 +41,11 @@ public class CustomerDataCleanupService {
             log.info("Found {} orders to clean", oldOrders.size());
 
             for (Order order : oldOrders) {
-                // Keep the customer relationship for referential integrity, but clear sensitive data
-                Customer customer = order.getCustomer();
-                if (customer != null) {
-                    // Mark the order as data removed instead of deleting
-                    order.setCustomerDataRemoved(true);
-                    orderRepository.save(order);
-                    log.debug("Removed customer data from order {}", order.getId());
-                }
+                // Delete customer reference from the order (GDPR compliance)
+                order.setCustomer(null);
+                order.setCustomerDataRemoved(true);
+                orderRepository.save(order);
+                log.debug("Deleted customer data from order {}", order.getId());
             }
 
             log.info("Customer data cleanup completed successfully. Cleaned {} orders", oldOrders.size());
