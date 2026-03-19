@@ -32,7 +32,9 @@
       "Bash(powershell -Command \"Stop-Process -Id 3256 -Force\" 2>&1; sleep 2; netstat -ano | grep 4200 | grep LISTEN || echo \"✓ Port 4200 is now free\")",
       "Bash(npx skills:*)",
       "Bash(git reset:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
