@@ -24,4 +24,5 @@ public class OrderDTO {
     private Integer countRolled;
     private Integer countPinse;
     private Long createdAt;
+    private String paymentMethod;
 }

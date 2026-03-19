@@ -133,7 +133,9 @@
     "noProductsAdded": "No products added",
     "orderNotes": "Order Notes",
     "additionalNotes": "Additional notes...",
-    "saveOrder": "Save Order"
+    "saveOrder": "Save Order",
+    "cash": "Cash",
+    "creditCard": "Credit Card (POS)"
   },
   "customers": {
     "title": "Customers",

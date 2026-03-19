@@ -65,6 +65,10 @@ public class Order {
     @Builder.Default
     private Integer countPinse = 0;
 
+    @Column(name = "payment_method")
+    @Builder.Default
+    private String paymentMethod = "CASH"; // CASH or CREDIT_CARD
+
     public enum OrderStatus {
         IN_PREPARATION("In Preparation"),
         READY("Ready"),

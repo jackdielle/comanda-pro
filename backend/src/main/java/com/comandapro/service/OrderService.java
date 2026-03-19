@@ -49,6 +49,7 @@ public class OrderService {
                 .customer(customer)
                 .deliveryTime(dto.getDeliveryTime())
                 .notes(dto.getNotes())
+                .paymentMethod(dto.getPaymentMethod() != null ? dto.getPaymentMethod() : "CASH")
                 .build();
 
         for (OrderLineDTO lineDTO : dto.getLines()) {
@@ -288,6 +289,7 @@ public class OrderService {
             .countRolled(order.getCountRolled())
             .countPinse(order.getCountPinse())
             .createdAt(order.getCreatedAt())
+            .paymentMethod(order.getPaymentMethod())
             .build();
     }
 

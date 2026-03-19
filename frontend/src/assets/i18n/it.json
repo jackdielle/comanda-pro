@@ -133,7 +133,9 @@
     "noProductsAdded": "Nessun prodotto aggiunto",
     "orderNotes": "Note Ordine",
     "additionalNotes": "Note aggiuntive...",
-    "saveOrder": "Salva Ordine"
+    "saveOrder": "Salva Ordine",
+    "cash": "Contanti",
+    "creditCard": "Carta di Credito (POS)"
   },
   "customers": {
     "title": "Clienti",

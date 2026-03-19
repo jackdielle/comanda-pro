@@ -47,6 +47,7 @@ export class NewOrderComponent implements OnInit {
   isPinsa = false;
   noLactose = false;
   rowNotes = '';
+  paymentMethodIsCreditCard = false; // false = cash, true = credit card
 
   // Extras (Mocked)
   extras: Extra[] = [
@@ -409,7 +410,8 @@ export class NewOrderComponent implements OnInit {
       lines: this.orderRows,
       deliveryTime: this.deliveryTime,
       notes: this.orderNotes,
-      status: 'IN_PREPARAZIONE'
+      status: 'IN_PREPARAZIONE',
+      paymentMethod: this.paymentMethodIsCreditCard ? 'CREDIT_CARD' : 'CASH'
     };
 
     this.loading = true;
@@ -440,6 +442,7 @@ export class NewOrderComponent implements OnInit {
     this.countPinse = 0;
     this.deliveryTime = '';
     this.orderNotes = '';
+    this.paymentMethodIsCreditCard = false;
     this.selectedCategory = '';
     this.productsByCategory = [];
     this.resetProductForm();
