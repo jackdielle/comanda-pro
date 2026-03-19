@@ -23,5 +23,13 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Run with production profile - environment variables are passed by Render
-CMD ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
+# Run with production profile and environment variables
+# Render passes env vars to the process, Spring reads them via --spring.config.location
+CMD java \
+  -jar app.jar \
+  --spring.profiles.active=prod \
+  --spring.datasource.url="$DATABASE_URL" \
+  --spring.datasource.username="$DATABASE_USERNAME" \
+  --spring.datasource.password="$DATABASE_PASSWORD" \
+  --jwt.secret="$JWT_SECRET" \
+  --cors.allowed-origins="$CORS_ALLOWED_ORIGINS"
