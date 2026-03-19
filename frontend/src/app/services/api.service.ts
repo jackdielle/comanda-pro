@@ -49,6 +49,7 @@ export interface Order {
   countRolled?: number;
   countPinse?: number;
   createdAt?: number;
+  paymentMethod?: string;
 }
 
 export interface OrdersSummary {
