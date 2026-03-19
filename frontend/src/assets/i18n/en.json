@@ -136,7 +136,8 @@
     "additionalNotes": "Additional notes...",
     "saveOrder": "Save Order",
     "cash": "Cash",
-    "pos": "POS"
+    "pos": "POS",
+    "paymentMethod": "Payment Method"
   },
   "customers": {
     "title": "Customers",

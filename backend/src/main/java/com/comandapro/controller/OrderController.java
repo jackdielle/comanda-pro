@@ -71,4 +71,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderSummaryByDateRange(startDate, endDate));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderDTO dto) {
+        return ResponseEntity.ok(orderService.updateOrder(id, dto));
+    }
+
 }

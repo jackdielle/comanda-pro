@@ -136,7 +136,8 @@
     "additionalNotes": "Note aggiuntive...",
     "saveOrder": "Salva Ordine",
     "cash": "Contanti",
-    "pos": "POS"
+    "pos": "POS",
+    "paymentMethod": "Metodo di Pagamento"
   },
   "customers": {
     "title": "Clienti",

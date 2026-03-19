@@ -215,6 +215,12 @@ export class ApiService {
     );
   }
 
+  updateOrder(id: number, order: Order): Observable<Order> {
+    return this.http.put<Order>(`${API_URL}/orders/${id}`, order).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   deleteOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${API_URL}/orders/${id}`).pipe(
       catchError(this.handleError)

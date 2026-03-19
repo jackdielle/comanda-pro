@@ -19,6 +19,11 @@ export class ViewOrdersComponent implements OnInit {
   error: string | null = null;
   selectedOrder: Order | null = null;
   newStatus = '';
+  isEditMode = false;
+  editDeliveryTime = '';
+  editNotes = '';
+  editPaymentMethod = '';
+  isSaving = false;
 
   constructor(private apiService: ApiService) { }
 
@@ -66,6 +71,48 @@ export class ViewOrdersComponent implements OnInit {
 
   closeDetails(): void {
     this.selectedOrder = null;
+    this.isEditMode = false;
+  }
+
+  startEdit(): void {
+    if (!this.selectedOrder) return;
+    this.isEditMode = true;
+    this.editDeliveryTime = this.selectedOrder.deliveryTime || '';
+    this.editNotes = this.selectedOrder.notes || '';
+    this.editPaymentMethod = this.selectedOrder.paymentMethod || 'CASH';
+  }
+
+  cancelEdit(): void {
+    this.isEditMode = false;
+  }
+
+  saveEdit(): void {
+    if (!this.selectedOrder) return;
+
+    this.isSaving = true;
+    const updatedOrder: Order = {
+      ...this.selectedOrder,
+      deliveryTime: this.editDeliveryTime,
+      notes: this.editNotes,
+      paymentMethod: this.editPaymentMethod
+    };
+
+    this.apiService.updateOrder(this.selectedOrder.id!, updatedOrder).subscribe({
+      next: (updated) => {
+        // Update the order in the list
+        const index = this.orders.findIndex(o => o.id === updated.id);
+        if (index >= 0) {
+          this.orders[index] = updated;
+        }
+        this.selectedOrder = updated;
+        this.isEditMode = false;
+        this.isSaving = false;
+      },
+      error: (err) => {
+        console.error('Error updating order', err);
+        this.isSaving = false;
+      }
+    });
   }
 
   updateStatus(): void {

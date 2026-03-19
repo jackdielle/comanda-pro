@@ -197,6 +197,55 @@ public class OrderService {
         return mapToDTO(orderRepository.save(order));
     }
 
+    public OrderDTO updateOrder(Long id, OrderDTO dto) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Update basic fields
+        order.setDeliveryTime(dto.getDeliveryTime());
+        order.setNotes(dto.getNotes());
+        order.setPaymentMethod(dto.getPaymentMethod() != null ? dto.getPaymentMethod() : "CASH");
+
+        // Update status if provided
+        if (dto.getStatus() != null) {
+            order.setStatus(Order.OrderStatus.valueOf(dto.getStatus()));
+        }
+
+        // Update order lines if provided
+        if (dto.getLines() != null && !dto.getLines().isEmpty()) {
+            // Clear existing lines
+            order.getLines().clear();
+            order.setCountClassic(0);
+            order.setCountPanozzi(0);
+            order.setCountRolled(0);
+            order.setCountPinse(0);
+
+            // Add new lines
+            for (OrderLineDTO lineDTO : dto.getLines()) {
+                Product product = productRepository.findById(lineDTO.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+
+                OrderLine line = OrderLine.builder()
+                    .order(order)
+                    .product(product)
+                    .quantity(lineDTO.getQuantity())
+                    .unitPrice(product.getPrice())
+                    .notes(lineDTO.getNotes())
+                    .isPinsa(lineDTO.getIsPinsa() != null ? lineDTO.getIsPinsa() : false)
+                    .noLactose(lineDTO.getNoLactose() != null ? lineDTO.getNoLactose() : false)
+                    .build();
+
+                order.getLines().add(line);
+                updateCounters(order, product.getCategory(), lineDTO.getQuantity(), lineDTO.getIsPinsa());
+            }
+
+            // Recalculate total
+            order.calculateTotal();
+        }
+
+        return mapToDTO(orderRepository.save(order));
+    }
+
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
