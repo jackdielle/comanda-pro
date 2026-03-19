@@ -47,6 +47,17 @@ export class ViewOrdersComponent implements OnInit {
     return this.orders.filter(o => o.status === this.statusFilter);
   }
 
+  isOrderFromToday(createdAt?: number): boolean {
+    if (!createdAt) return false;
+    const orderDate = new Date(createdAt);
+    const today = new Date();
+    return orderDate.toDateString() === today.toDateString();
+  }
+
+  shouldShowCustomer(order: Order): boolean {
+    return this.isOrderFromToday(order.createdAt);
+  }
+
   openDetails(order: Order): void {
     this.selectedOrder = order;
     this.newStatus = order.status || '';

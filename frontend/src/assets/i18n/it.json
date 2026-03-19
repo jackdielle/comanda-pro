@@ -82,7 +82,8 @@
     "orderStatus": "Stato Ordine",
     "updateStatus": "Aggiorna Stato",
     "orderTotal": "Totale Ordine",
-    "deleteOrder": "Elimina Ordine"
+    "deleteOrder": "Elimina Ordine",
+    "archiveNotice": "Questo è un ordine archiviato. Le informazioni del cliente non vengono visualizzate per la protezione della privacy."
   },
   "newOrder": {
     "title": "Nuovo Ordine",
@@ -237,6 +238,7 @@
     "date": "Data",
     "details": "Dettagli",
     "creating": "Creazione in corso...",
-    "saving": "Salvataggio in corso..."
+    "saving": "Salvataggio in corso...",
+    "archived": "Archiviato"
   }
 }

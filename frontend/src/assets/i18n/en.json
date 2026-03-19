@@ -82,7 +82,8 @@
     "orderStatus": "Order Status",
     "updateStatus": "Update Status",
     "orderTotal": "Order Total",
-    "deleteOrder": "Delete Order"
+    "deleteOrder": "Delete Order",
+    "archiveNotice": "This is an archived order. Customer information is not displayed for data privacy."
   },
   "newOrder": {
     "title": "New Order",
@@ -237,6 +238,7 @@
     "date": "Date",
     "details": "Details",
     "creating": "Creating...",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "archived": "Archived"
   }
 }

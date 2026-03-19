@@ -33,6 +33,7 @@
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">#ID</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.customer' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'customers.phone' | transloco }}</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'newOrder.selectProducts' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.total' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.status' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'common.date' | transloco }}</th>
@@ -42,8 +43,22 @@
       <tbody class="divide-y">
         <tr *ngFor="let order of filterOrders()" class="hover:bg-gray-50 transition">
           <td class="px-6 py-4 text-sm font-semibold text-gray-800">#{{ order.id }}</td>
-          <td class="px-6 py-4 text-sm text-gray-800">{{ order.customer.name }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ order.customer.phoneNumber }}</td>
+          <td class="px-6 py-4 text-sm" [ngClass]="shouldShowCustomer(order) ? 'text-gray-800' : 'text-gray-400'">
+            <span *ngIf="shouldShowCustomer(order)">{{ order.customer.name }}</span>
+            <span *ngIf="!shouldShowCustomer(order)" class="italic">{{ 'common.archived' | transloco }}</span>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-600">
+            <span *ngIf="shouldShowCustomer(order)">{{ order.customer.phoneNumber }}</span>
+            <span *ngIf="!shouldShowCustomer(order)" class="text-gray-400">-</span>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-700">
+            <div class="text-xs space-y-1">
+              <div *ngIf="order.countClassic > 0" class="text-orange-700">{{ order.countClassic }}x {{ 'dashboard.classicPizzas' | transloco }}</div>
+              <div *ngIf="order.countPanozzi > 0" class="text-green-700">{{ order.countPanozzi }}x {{ 'dashboard.panozzi' | transloco }}</div>
+              <div *ngIf="order.countRolled > 0" class="text-purple-700">{{ order.countRolled }}x {{ 'dashboard.rolled' | transloco }}</div>
+              <div *ngIf="order.countPinse > 0" class="text-pink-700">{{ order.countPinse }}x {{ 'dashboard.pinse' | transloco }}</div>
+            </div>
+          </td>
           <td class="px-6 py-4 text-sm font-bold text-pizza-red">€{{ order.total?.toFixed(2) }}</td>
           <td class="px-6 py-4 text-sm">
             <span [ngClass]="'px-3 py-1 rounded-full text-xs font-semibold ' + getStatusColor(order.status)">
@@ -81,8 +96,8 @@
 
       <!-- Content -->
       <div class="p-6 space-y-6">
-        <!-- Customer Information -->
-        <div>
+        <!-- Customer Information (Only for today's orders) -->
+        <div *ngIf="shouldShowCustomer(selectedOrder)">
           <h3 class="font-bold text-gray-800 mb-3">{{ 'orders.customerInformation' | transloco }}</h3>
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
@@ -102,6 +117,12 @@
               <div class="font-semibold">{{ selectedOrder.customer.zone }}</div>
             </div>
           </div>
+        </div>
+
+        <!-- Archived Notice (For past orders) -->
+        <div *ngIf="!shouldShowCustomer(selectedOrder)" class="bg-gray-100 border border-gray-300 rounded p-4 text-sm text-gray-700">
+          <p class="font-semibold mb-1">{{ 'common.archived' | transloco }}</p>
+          <p>{{ 'orders.archiveNotice' | transloco }}</p>
         </div>
 
         <!-- Ordered Products -->
