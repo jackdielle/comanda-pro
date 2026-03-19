@@ -23,12 +23,5 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Run with production profile and pass environment variables
-CMD java \
-  -Dspring.profiles.active=prod \
-  -Dspring.datasource.url=${DATABASE_URL} \
-  -Dspring.datasource.username=${DATABASE_USERNAME} \
-  -Dspring.datasource.password=${DATABASE_PASSWORD} \
-  -Djwt.secret=${JWT_SECRET} \
-  -Dcors.allowed-origins=${CORS_ALLOWED_ORIGINS} \
-  -jar app.jar
+# Run with production profile - environment variables are passed by Render
+CMD ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
