@@ -23,13 +23,15 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Run with production profile and environment variables
-# Render passes env vars to the process, Spring reads them via --spring.config.location
-CMD java \
-  -jar app.jar \
-  --spring.profiles.active=prod \
-  --spring.datasource.url="$DATABASE_URL" \
-  --spring.datasource.username="$DATABASE_USERNAME" \
-  --spring.datasource.password="$DATABASE_PASSWORD" \
-  --jwt.secret="$JWT_SECRET" \
-  --cors.allowed-origins="$CORS_ALLOWED_ORIGINS"
+# Create entrypoint script to pass environment variables
+RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
+    echo 'exec java -jar app.jar \' >> /app/entrypoint.sh && \
+    echo '  --spring.profiles.active=prod \' >> /app/entrypoint.sh && \
+    echo '  --spring.datasource.url="$DATABASE_URL" \' >> /app/entrypoint.sh && \
+    echo '  --spring.datasource.username="$DATABASE_USERNAME" \' >> /app/entrypoint.sh && \
+    echo '  --spring.datasource.password="$DATABASE_PASSWORD" \' >> /app/entrypoint.sh && \
+    echo '  --jwt.secret="$JWT_SECRET" \' >> /app/entrypoint.sh && \
+    echo '  --cors.allowed-origins="$CORS_ALLOWED_ORIGINS"' >> /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
