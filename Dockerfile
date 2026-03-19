@@ -24,10 +24,12 @@ COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
 
 # Create entrypoint script to pass environment variables
+# Converts postgresql:// URL to jdbc:postgresql:// format
 RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
+    echo 'JDBC_URL="jdbc:${DATABASE_URL}"' >> /app/entrypoint.sh && \
     echo 'exec java -jar app.jar \' >> /app/entrypoint.sh && \
     echo '  --spring.profiles.active=prod \' >> /app/entrypoint.sh && \
-    echo '  --spring.datasource.url="$DATABASE_URL" \' >> /app/entrypoint.sh && \
+    echo '  --spring.datasource.url="$JDBC_URL" \' >> /app/entrypoint.sh && \
     echo '  --spring.datasource.username="$DATABASE_USERNAME" \' >> /app/entrypoint.sh && \
     echo '  --spring.datasource.password="$DATABASE_PASSWORD" \' >> /app/entrypoint.sh && \
     echo '  --jwt.secret="$JWT_SECRET" \' >> /app/entrypoint.sh && \
