@@ -326,14 +326,16 @@
                         <button (click)="paymentMethodIsCreditCard = false"
                                 [class.bg-white]="!paymentMethodIsCreditCard"
                                 [class.shadow]="!paymentMethodIsCreditCard"
-                                class="px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
+                                [class.active]="!paymentMethodIsCreditCard"
+                                class="payment-toggle-btn px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
                                 [ngClass]="!paymentMethodIsCreditCard ? 'text-gray-900' : 'text-gray-600'">
                             {{ 'newOrder.cash' | transloco }}
                         </button>
                         <button (click)="paymentMethodIsCreditCard = true"
                                 [class.bg-white]="paymentMethodIsCreditCard"
                                 [class.shadow]="paymentMethodIsCreditCard"
-                                class="px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
+                                [class.active]="paymentMethodIsCreditCard"
+                                class="payment-toggle-btn px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer"
                                 [ngClass]="paymentMethodIsCreditCard ? 'text-gray-900' : 'text-gray-600'">
                             {{ 'newOrder.pos' | transloco }}
                         </button>

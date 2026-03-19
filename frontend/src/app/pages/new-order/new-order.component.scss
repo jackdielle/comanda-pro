@@ -1,0 +1,19 @@
+// Payment method toggle slide animation
+@keyframes slideIn {
+  from {
+    transform: translateX(-4px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.payment-toggle-btn {
+  transition: all 0.3s ease-in-out;
+
+  &.active {
+    animation: slideIn 0.3s ease-in-out;
+  }
+}
