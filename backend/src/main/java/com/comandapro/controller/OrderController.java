@@ -1,5 +1,6 @@
 package com.comandapro.controller;
 
+import com.comandapro.dto.DailyOrderSummaryDTO;
 import com.comandapro.dto.OrderDTO;
 import com.comandapro.dto.OrderSummaryDTO;
 import com.comandapro.service.OrderService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -58,6 +60,13 @@ public class OrderController {
     @GetMapping("/summary/totals")
     public ResponseEntity<OrderSummaryDTO> getSummary() {
         return ResponseEntity.ok(orderService.getOrderSummary());
+    }
+
+    @GetMapping("/summary/by-date-range")
+    public ResponseEntity<List<DailyOrderSummaryDTO>> getSummaryByDateRange(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+        return ResponseEntity.ok(orderService.getOrderSummaryByDateRange(startDate, endDate));
     }
 
 }

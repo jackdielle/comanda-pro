@@ -6,6 +6,7 @@
     "customers": "Clienti",
     "products": "Prodotti",
     "admin": "Admin",
+    "reports": "Rapporti",
     "profile": "Profilo",
     "logout": "Esci"
   },
@@ -206,6 +207,16 @@
     "passwordMismatch": "Le password non coincidono",
     "enable": "Abilita",
     "disable": "Disabilita"
+  },
+  "reports": {
+    "title": "Rapporti",
+    "subtitle": "Genera rapporti sulle vendite filtrati per intervallo di date",
+    "startDate": "Data Inizio",
+    "endDate": "Data Fine",
+    "generate": "Genera Rapporto",
+    "date": "Data",
+    "total": "Totale",
+    "noData": "Nessun dato disponibile. Seleziona un intervallo di date e genera un rapporto."
   },
   "common": {
     "yes": "Sì",

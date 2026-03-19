@@ -61,6 +61,16 @@ export interface OrdersSummary {
   ordersByStatus: { [key: string]: number };
 }
 
+export interface DailyOrderSummary {
+  date: string;
+  totalOrders: number;
+  totalRevenue: number;
+  totalClassic: number;
+  totalPanozzi: number;
+  totalRolled: number;
+  totalPinse: number;
+}
+
 export interface AppUser {
   id: number;
   username: string;
@@ -211,6 +221,14 @@ export class ApiService {
 
   getOrdersSummary(): Observable<OrdersSummary> {
     return this.http.get<OrdersSummary>(`${API_URL}/orders/summary/totals`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getOrdersSummaryByDateRange(startDate: string, endDate: string): Observable<DailyOrderSummary[]> {
+    return this.http.get<DailyOrderSummary[]>(`${API_URL}/orders/summary/by-date-range`, {
+      params: { startDate, endDate }
+    }).pipe(
       catchError(this.handleError)
     );
   }

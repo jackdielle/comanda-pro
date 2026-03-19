@@ -6,6 +6,7 @@
     "customers": "Customers",
     "products": "Products",
     "admin": "Admin",
+    "reports": "Reports",
     "profile": "Profile",
     "logout": "Logout"
   },
@@ -206,6 +207,16 @@
     "passwordMismatch": "Passwords do not match",
     "enable": "Enable",
     "disable": "Disable"
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Generate sales reports filtered by date range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "generate": "Generate Report",
+    "date": "Date",
+    "total": "Total",
+    "noData": "No data available. Please select a date range and generate a report."
   },
   "common": {
     "yes": "Yes",

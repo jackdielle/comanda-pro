@@ -7,6 +7,7 @@ import { ManageProductsComponent } from './pages/manage-products/manage-products
 import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminUsersComponent } from './pages/admin-users/admin-users.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
@@ -53,6 +54,11 @@ export const routes: Routes = [
   {
     path: 'admin/users',
     component: AdminUsersComponent,
+    canActivate: [authGuard, adminGuard]
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
     canActivate: [authGuard, adminGuard]
   },
   {

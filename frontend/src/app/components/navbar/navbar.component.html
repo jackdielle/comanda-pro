@@ -32,6 +32,10 @@
           class="navbar-link navbar-link-admin">
           {{ 'nav.admin' | transloco }}
         </a>
+        <a routerLink="/reports" routerLinkActive="active" *ngIf="isAdmin()"
+          class="navbar-link navbar-link-admin">
+          {{ 'nav.reports' | transloco }}
+        </a>
       </div>
 
       <!-- User Menu -->
@@ -71,6 +75,9 @@
       </a>
       <a routerLink="/admin/users" (click)="closeMenu()" *ngIf="isAdmin()" class="navbar-mobile-link navbar-mobile-link-admin">
         {{ 'nav.admin' | transloco }}
+      </a>
+      <a routerLink="/reports" (click)="closeMenu()" *ngIf="isAdmin()" class="navbar-mobile-link navbar-mobile-link-admin">
+        {{ 'nav.reports' | transloco }}
       </a>
       <a routerLink="/profile" (click)="closeMenu()" class="navbar-mobile-link">
         {{ 'nav.profile' | transloco }}

@@ -1,6 +1,7 @@
 package com.comandapro.service;
 
 import com.comandapro.dto.CustomerDTO;
+import com.comandapro.dto.DailyOrderSummaryDTO;
 import com.comandapro.dto.OrderDTO;
 import com.comandapro.dto.OrderSummaryDTO;
 import com.comandapro.dto.OrderLineDTO;
@@ -16,10 +17,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.print.PrintService;
@@ -195,21 +201,63 @@ public class OrderService {
     }
 
     public OrderSummaryDTO getOrderSummary() {
-        List<Order> orders = orderRepository.findAll();
+        LocalDate today = LocalDate.now();
+        long startOfDay = today.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long endOfDay = today.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant().toEpochMilli() - 1;
+
+        List<Order> todayOrders = orderRepository.findAll().stream()
+            .filter(o -> o.getCreatedAt() >= startOfDay && o.getCreatedAt() <= endOfDay)
+            .collect(Collectors.toList());
 
         return OrderSummaryDTO.builder()
-            .totalOrders((long) orders.size())
-            .totalRevenue(orders.stream().mapToDouble(Order::getTotal).sum())
-            .totalClassic(orders.stream().mapToInt(Order::getCountClassic).sum())
-            .totalPanozzi(orders.stream().mapToInt(Order::getCountPanozzi).sum())
-            .totalRolled(orders.stream().mapToInt(Order::getCountRolled).sum())
-            .totalPinse(orders.stream().mapToInt(Order::getCountPinse).sum())
+            .totalOrders((long) todayOrders.size())
+            .totalRevenue(todayOrders.stream().mapToDouble(Order::getTotal).sum())
+            .totalClassic(todayOrders.stream().mapToInt(Order::getCountClassic).sum())
+            .totalPanozzi(todayOrders.stream().mapToInt(Order::getCountPanozzi).sum())
+            .totalRolled(todayOrders.stream().mapToInt(Order::getCountRolled).sum())
+            .totalPinse(todayOrders.stream().mapToInt(Order::getCountPinse).sum())
             .ordersByStatus(Arrays.stream(Order.OrderStatus.values())
                 .collect(Collectors.toMap(
                     Enum::name,
-                    status -> orderRepository.countByStatus(status)
+                    status -> todayOrders.stream()
+                        .filter(o -> o.getStatus() == status)
+                        .count()
                 )))
             .build();
+    }
+
+    public List<DailyOrderSummaryDTO> getOrderSummaryByDateRange(LocalDate startDate, LocalDate endDate) {
+        long startOfDay = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long endOfDayFinal = endDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant().toEpochMilli() - 1;
+
+        List<Order> allOrders = orderRepository.findAll();
+
+        Map<LocalDate, DailyOrderSummaryDTO> dailySummaryMap = new HashMap<>();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            long dayStart = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+            long dayEnd = date.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant().toEpochMilli() - 1;
+
+            List<Order> dayOrders = allOrders.stream()
+                .filter(o -> o.getCreatedAt() >= dayStart && o.getCreatedAt() <= dayEnd)
+                .collect(Collectors.toList());
+
+            DailyOrderSummaryDTO daily = DailyOrderSummaryDTO.builder()
+                .date(date)
+                .totalOrders((long) dayOrders.size())
+                .totalRevenue(dayOrders.stream().mapToDouble(Order::getTotal).sum())
+                .totalClassic(dayOrders.stream().mapToInt(Order::getCountClassic).sum())
+                .totalPanozzi(dayOrders.stream().mapToInt(Order::getCountPanozzi).sum())
+                .totalRolled(dayOrders.stream().mapToInt(Order::getCountRolled).sum())
+                .totalPinse(dayOrders.stream().mapToInt(Order::getCountPinse).sum())
+                .build();
+
+            dailySummaryMap.put(date, daily);
+        }
+
+        return new ArrayList<>(dailySummaryMap.values()).stream()
+            .sorted((a, b) -> a.getDate().compareTo(b.getDate()))
+            .collect(Collectors.toList());
     }
 
     private void updateCounters(Order order, Product.Category category, Integer quantity, Boolean isPinsa) {
