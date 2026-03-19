@@ -321,7 +321,8 @@
                     </div>
 
                     <!-- Payment Method Toggle -->
-                    <div class="flex items-center gap-2 bg-gray-100 rounded-full p-1 w-fit">
+                    <div class="flex justify-center">
+                        <div class="flex items-center gap-2 bg-gray-100 rounded-full p-1 w-fit">
                         <button (click)="paymentMethodIsCreditCard = false"
                                 [class.bg-white]="!paymentMethodIsCreditCard"
                                 [class.shadow]="!paymentMethodIsCreditCard"
@@ -336,6 +337,7 @@
                                 [ngClass]="paymentMethodIsCreditCard ? 'text-gray-900' : 'text-gray-600'">
                             {{ 'newOrder.pos' | transloco }}
                         </button>
+                        </div>
                     </div>
                 </div>
 
