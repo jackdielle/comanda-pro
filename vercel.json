@@ -1,5 +1,4 @@
 {
-  "buildCommand": "npm run build -- --configuration production",
-  "outputDirectory": "frontend/dist/gestore-comande-frontend",
-  "rootDirectory": "frontend"
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist/gestore-comande-frontend"
 }
