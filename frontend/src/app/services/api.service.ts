@@ -34,6 +34,7 @@ export interface OrderRow {
   notes?: string;
   isPinsa?: boolean;
   noLactose?: boolean;
+  isFree?: boolean;
 }
 
 export interface Order {

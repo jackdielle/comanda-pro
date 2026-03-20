@@ -36,7 +36,7 @@
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'newOrder.selectProducts' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.total' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.status' | transloco }}</th>
-          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'common.date' | transloco }}</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.deliveryTime' | transloco }}</th>
           <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">{{ 'orders.actions' | transloco }}</th>
         </tr>
       </thead>
@@ -62,10 +62,10 @@
           <td class="px-6 py-4 text-sm font-bold text-pizza-red">€{{ order.total?.toFixed(2) }}</td>
           <td class="px-6 py-4 text-sm">
             <span [ngClass]="'px-3 py-1 rounded-full text-xs font-semibold ' + getStatusColor(order.status)">
-              {{ order.status }}
+              {{ (getOrderStatusLabel(order.status)) | transloco }}
             </span>
           </td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ formatDate(order.createdAt) }}</td>
+          <td class="px-6 py-4 text-sm text-gray-600">{{ order.deliveryTime || '-' }}</td>
           <td class="px-6 py-4 text-sm">
             <button (click)="openDetails(order)" class="text-pizza-red hover:text-red-700 font-semibold">
               {{ 'common.details' | transloco }}
@@ -81,14 +81,11 @@
   </div>
 
   <!-- Order Details Modal -->
-  <div *ngIf="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-96 overflow-y-auto">
+  <div *ngIf="selectedOrder" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" (click)="closeDetails()">
+    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[88vh] overflow-y-auto" (click)="$event.stopPropagation()">
       <!-- Header -->
-      <div class="bg-gradient-to-r from-pizza-red to-red-600 text-white p-6 flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold">Order #{{ selectedOrder.id }}</h2>
-          <p class="text-sm mt-1">{{ selectedOrder.customer?.name ?? ('common.archived' | transloco) }}</p>
-        </div>
+      <div class="bg-gradient-to-r from-pizza-red to-red-600 text-white p-3 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Order #{{ selectedOrder.id }}</h2>
         <button (click)="closeDetails()" class="text-white hover:opacity-80 text-2xl font-bold">
           ✕
         </button>
@@ -168,7 +165,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">{{ 'orders.orderStatus' | transloco }}</label>
             <select [(ngModel)]="newStatus"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pizza-red">
-              <option *ngFor="let status of orderStatuses" [value]="status">{{ status }}</option>
+              <option *ngFor="let status of orderStatuses" [value]="status">{{ (getOrderStatusLabel(status)) | transloco }}</option>
             </select>
             <button (click)="updateStatus()"
               class="mt-2 w-full bg-pizza-green text-white py-2 rounded-lg hover:bg-green-700 font-semibold">
@@ -227,6 +224,80 @@
                 {{ 'newOrder.pos' | transloco }}
               </button>
             </div>
+          </div>
+
+          <!-- Editable product list -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              {{ 'orders.orderedProducts' | transloco }}
+            </label>
+            <div class="space-y-2 border rounded-lg p-2 max-h-40 overflow-y-auto">
+              <div *ngFor="let row of editLines; let i = index"
+                   class="bg-gray-50 p-2 rounded flex justify-between items-center text-sm">
+                <div>
+                  <div class="font-semibold">{{ row.quantity }}x {{ row.productName }}</div>
+                  <div class="text-gray-500 text-xs">{{ row.productCategory }}
+                    <span *ngIf="row.isPinsa"> · Pinsa</span>
+                    <span *ngIf="row.noLactose"> · No Lattosio</span>
+                  </div>
+                  <div *ngIf="row.notes" class="text-xs text-gray-400 italic">{{ row.notes }}</div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold">€{{ row.subtotal?.toFixed(2) }}</span>
+                  <button (click)="removeEditLine(i)"
+                    class="text-red-500 hover:text-red-700 text-xs font-semibold px-1">✕</button>
+                </div>
+              </div>
+              <div *ngIf="editLines.length === 0" class="text-gray-400 text-sm text-center py-2">
+                {{ 'newOrder.noProductsAdded' | transloco }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Add-product sub-form -->
+          <div class="border border-dashed border-gray-300 rounded-lg p-3 space-y-2 bg-gray-50">
+            <p class="text-sm font-medium text-gray-700">{{ 'newOrder.addProduct' | transloco }}</p>
+            <div class="grid grid-cols-2 gap-2">
+              <select [(ngModel)]="editSelectedCategory" (change)="loadEditProducts()"
+                class="px-2 py-1 border border-gray-300 rounded text-sm">
+                <option value="">{{ 'newOrder.selectCategory' | transloco }}</option>
+                <option *ngFor="let cat of editCategories" [value]="cat">{{ (getProductCategoryLabel(cat)) | transloco }}</option>
+              </select>
+              <select [(ngModel)]="editSelectedProduct"
+                class="px-2 py-1 border border-gray-300 rounded text-sm"
+                [disabled]="editProductsByCategory.length === 0">
+                <option [ngValue]="null">{{ 'newOrder.selectProduct' | transloco }}</option>
+                <option *ngFor="let p of editProductsByCategory" [ngValue]="p">
+                  {{ p.name }} (€{{ p.price.toFixed(2) }})
+                </option>
+              </select>
+            </div>
+            <div class="grid grid-cols-3 gap-2 items-center">
+              <input type="number" [(ngModel)]="editQuantity" min="1"
+                class="px-2 py-1 border border-gray-300 rounded text-sm"
+                placeholder="{{ 'newOrder.qty' | transloco }}" />
+              <label class="flex items-center gap-1 text-xs cursor-pointer">
+                <input type="checkbox" [(ngModel)]="editIsPinsa" />
+                {{ 'newOrder.pinsaSurcharge' | transloco }}
+              </label>
+              <label class="flex items-center gap-1 text-xs cursor-pointer">
+                <input type="checkbox" [(ngModel)]="editNoLactose" />
+                {{ 'newOrder.noLactoseSurcharge' | transloco }}
+              </label>
+            </div>
+            <input type="text" [(ngModel)]="editRowNotes"
+              class="w-full px-2 py-1 border border-gray-300 rounded text-sm"
+              placeholder="{{ 'newOrder.rowNotesPlaceholder' | transloco }}" />
+            <button (click)="addEditProduct()" [disabled]="!editSelectedProduct"
+              class="w-full bg-pizza-red text-white py-1.5 rounded text-sm font-semibold
+                     hover:bg-red-700 disabled:opacity-50 transition">
+              {{ 'newOrder.addToCart' | transloco }}
+            </button>
+          </div>
+
+          <!-- Live total -->
+          <div class="text-right text-sm font-bold text-pizza-red">
+            Totale: €{{ editTotal.toFixed(2) }}
           </div>
 
           <div class="flex gap-2 mt-4">

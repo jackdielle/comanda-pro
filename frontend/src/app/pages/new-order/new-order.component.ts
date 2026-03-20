@@ -25,6 +25,7 @@ export class NewOrderComponent implements OnInit {
   // Customer
   customerId: number | null = null;
   phoneNumber = '';
+  internalCustomerPhone = '';
   searchedCustomers: Customer[] = [];
   selectedCustomer: Customer | null = null;
   newCustomer = false;
@@ -46,6 +47,7 @@ export class NewOrderComponent implements OnInit {
   orderNotes = '';
   isPinsa = false;
   noLactose = false;
+  isFree = false;
   rowNotes = '';
   paymentMethodIsCreditCard = false; // false = cash, true = credit card
 
@@ -179,6 +181,24 @@ export class NewOrderComponent implements OnInit {
     this.newCustomer = false;
   }
 
+  confirmInternalCustomer(): void {
+    if (this.customerName.length < 2) {
+      this.error = 'Enter a customer name (min 2 characters)';
+      return;
+    }
+
+    // Create temporary internal customer (not saved to DB)
+    this.selectedCustomer = {
+      id: undefined,
+      name: this.customerName,
+      phoneNumber: this.internalCustomerPhone,
+      address: '',
+      intercom: '',
+      zone: 'INTERNO'
+    };
+    this.error = null;
+  }
+
   // ===== CREATE NEW CUSTOMER =====
   createNewCustomer(): void {
     if (this.deliveryType === 'INTERNA') {
@@ -304,7 +324,8 @@ export class NewOrderComponent implements OnInit {
     // Add extras cost per unit
     const extrasCost = this.getExtrasCost();
 
-    const unitPriceWithSurcharge = this.selectedProduct.price + surcharge + extrasCost;
+    // If free, set price to 0, otherwise calculate normally
+    const unitPriceWithSurcharge = this.isFree ? 0 : (this.selectedProduct.price + surcharge + extrasCost);
     const subtotal = unitPriceWithSurcharge * this.quantity;
 
     // Build extras string for notes
@@ -320,7 +341,8 @@ export class NewOrderComponent implements OnInit {
       subtotal: subtotal,
       notes: combinedNotes,
       isPinsa: this.isPinsa,
-      noLactose: this.noLactose
+      noLactose: this.noLactose,
+      isFree: this.isFree
     };
 
     this.orderRows.push(row);
@@ -336,6 +358,7 @@ export class NewOrderComponent implements OnInit {
     this.rowNotes = '';
     this.isPinsa = false;
     this.noLactose = false;
+    this.isFree = false;
     this.selectedExtras = [];
   }
 
@@ -352,17 +375,17 @@ export class NewOrderComponent implements OnInit {
   }
 
   updateCounters(row: OrderRow): void {
-    if (row.isPinsa && row.productCategory === 'CLASSICHE') {
+    if (row.isPinsa && row.productCategory === 'CLASSIC') {
       this.countPinse += row.quantity;
     } else {
       switch (row.productCategory) {
-        case 'CLASSICHE':
+        case 'CLASSIC':
           this.countClassic += row.quantity;
           break;
         case 'PANOZZI':
           this.countPanozzi += row.quantity;
           break;
-        case 'ARROTOLATI':
+        case 'ROLLED':
           this.countRolled += row.quantity;
           break;
         case 'PINSE':
@@ -373,17 +396,17 @@ export class NewOrderComponent implements OnInit {
   }
 
   subtractCounters(row: OrderRow): void {
-    if (row.isPinsa && row.productCategory === 'CLASSICHE') {
+    if (row.isPinsa && row.productCategory === 'CLASSIC') {
       this.countPinse -= row.quantity;
     } else {
       switch (row.productCategory) {
-        case 'CLASSICHE':
+        case 'CLASSIC':
           this.countClassic -= row.quantity;
           break;
         case 'PANOZZI':
           this.countPanozzi -= row.quantity;
           break;
-        case 'ARROTOLATI':
+        case 'ROLLED':
           this.countRolled -= row.quantity;
           break;
         case 'PINSE':
@@ -405,12 +428,17 @@ export class NewOrderComponent implements OnInit {
       return;
     }
 
+    if (!this.deliveryTime) {
+      this.error = 'Select a delivery time';
+      return;
+    }
+
     const order: Order = {
       customer: this.selectedCustomer,
       lines: this.orderRows,
       deliveryTime: this.deliveryTime,
       notes: this.orderNotes,
-      status: 'IN_PREPARAZIONE',
+      status: 'IN_PREPARATION',
       paymentMethod: this.paymentMethodIsCreditCard ? 'CREDIT_CARD' : 'CASH'
     };
 
@@ -433,6 +461,7 @@ export class NewOrderComponent implements OnInit {
     this.selectedCustomer = null;
     this.customerId = null;
     this.phoneNumber = '';
+    this.internalCustomerPhone = '';
     this.customerName = '';
     this.orderRows = [];
     this.orderTotal = 0;

@@ -83,7 +83,12 @@
     "updateStatus": "Update Status",
     "orderTotal": "Order Total",
     "deleteOrder": "Delete Order",
-    "archiveNotice": "This is an archived order. Customer information is not displayed for data privacy."
+    "archiveNotice": "This is an archived order. Customer information is not displayed for data privacy.",
+    "IN_PREPARATION": "In Preparation",
+    "READY": "Ready",
+    "IN_DELIVERY": "In Delivery",
+    "DELIVERED": "Delivered",
+    "CANCELLED": "Cancelled"
   },
   "newOrder": {
     "title": "New Order",
@@ -179,7 +184,15 @@
     "editProduct": "Edit Product",
     "available": "Available",
     "noProductsInCategory": "No products in this category",
-    "selectCategory": "Select category..."
+    "selectCategory": "Select category...",
+    "CLASSIC": "Classic Pizzas",
+    "SPECIAL": "Special Pizzas",
+    "PINSE": "Pinse",
+    "PANOZZI": "Panozzi",
+    "ROLLED": "Rolled",
+    "FRIED": "Fried",
+    "BEVERAGES": "Beverages",
+    "DESSERTS": "Desserts"
   },
   "admin": {
     "title": "User Management",
@@ -240,6 +253,7 @@
     "details": "Details",
     "creating": "Creating...",
     "saving": "Saving...",
-    "archived": "Archived"
+    "archived": "Archived",
+    "optional": "Optional"
   }
 }

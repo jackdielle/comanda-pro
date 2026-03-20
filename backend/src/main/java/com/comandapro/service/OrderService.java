@@ -42,8 +42,21 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     public OrderDTO createOrder(OrderDTO dto) {
-        Customer customer = customerRepository.findById(dto.getCustomer().getId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        Customer customer;
+
+        // Handle internal consumption (no customer ID)
+        if (dto.getCustomer().getId() == null) {
+            customer = Customer.builder()
+                    .name(dto.getCustomer().getName())
+                    .phoneNumber(dto.getCustomer().getPhoneNumber())  // Can be null if not provided
+                    .address("")
+                    .zone("INTERNO")
+                    .build();
+            customer = customerRepository.save(customer);
+        } else {
+            customer = customerRepository.findById(dto.getCustomer().getId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+        }
 
         Order order = Order.builder()
                 .customer(customer)
@@ -225,11 +238,12 @@ public class OrderService {
                 Product product = productRepository.findById(lineDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
+                double unitPrice = lineDTO.getUnitPrice() != null ? lineDTO.getUnitPrice() : product.getPrice();
                 OrderLine line = OrderLine.builder()
                     .order(order)
                     .product(product)
                     .quantity(lineDTO.getQuantity())
-                    .unitPrice(product.getPrice())
+                    .unitPrice(unitPrice)
                     .notes(lineDTO.getNotes())
                     .isPinsa(lineDTO.getIsPinsa() != null ? lineDTO.getIsPinsa() : false)
                     .noLactose(lineDTO.getNoLactose() != null ? lineDTO.getNoLactose() : false)

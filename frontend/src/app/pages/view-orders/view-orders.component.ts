@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ApiService, Order } from '../../services/api.service';
+import { ApiService, Order, Product, OrderRow } from '../../services/api.service';
+import { OrderStatus, ORDER_STATUSES, getOrderStatusLabel } from '../../enums/order-status.enum';
+import { ProductCategory, PRODUCT_CATEGORIES, getProductCategoryLabel } from '../../enums/product-category.enum';
 
 @Component({
   selector: 'app-view-orders',
@@ -14,7 +16,7 @@ import { ApiService, Order } from '../../services/api.service';
 export class ViewOrdersComponent implements OnInit {
   orders: Order[] = [];
   statusFilter = '';
-  orderStatuses = ['IN_PREPARAZIONE', 'PRONTO', 'IN_CONSEGNA', 'CONSEGNATO', 'ANNULLATO'];
+  orderStatuses = ORDER_STATUSES;
   loading = true;
   error: string | null = null;
   selectedOrder: Order | null = null;
@@ -24,6 +26,17 @@ export class ViewOrdersComponent implements OnInit {
   editNotes = '';
   editPaymentMethod = '';
   isSaving = false;
+  editLines: OrderRow[] = [];
+  editCategories = PRODUCT_CATEGORIES;
+  editSelectedCategory = '';
+  editProductsByCategory: Product[] = [];
+  editSelectedProduct: Product | null = null;
+  editQuantity = 1;
+  editIsPinsa = false;
+  editNoLactose = false;
+  editRowNotes = '';
+  getOrderStatusLabel = getOrderStatusLabel;
+  getProductCategoryLabel = getProductCategoryLabel;
 
   constructor(private apiService: ApiService) { }
 
@@ -80,21 +93,70 @@ export class ViewOrdersComponent implements OnInit {
     this.editDeliveryTime = this.selectedOrder.deliveryTime || '';
     this.editNotes = this.selectedOrder.notes || '';
     this.editPaymentMethod = this.selectedOrder.paymentMethod || 'CASH';
+    this.editLines = this.selectedOrder.lines.map(l => ({ ...l }));
+    this.editSelectedCategory = '';
+    this.editProductsByCategory = [];
+    this.editSelectedProduct = null;
+    this.editQuantity = 1;
+    this.editIsPinsa = false;
+    this.editNoLactose = false;
+    this.editRowNotes = '';
   }
 
   cancelEdit(): void {
     this.isEditMode = false;
   }
 
+  loadEditProducts(): void {
+    if (!this.editSelectedCategory) { this.editProductsByCategory = []; return; }
+    this.apiService.getProductsByCategory(this.editSelectedCategory).subscribe(products => {
+      this.editProductsByCategory = products.filter(p => p.available !== false);
+      this.editSelectedProduct = null;
+    });
+  }
+
+  addEditProduct(): void {
+    if (!this.editSelectedProduct || this.editQuantity < 1) return;
+    const surcharge = (this.editIsPinsa ? 1.5 : 0) + (this.editNoLactose ? 1.5 : 0);
+    const unitPrice = this.editSelectedProduct.price + surcharge;
+    const row: OrderRow = {
+      productId: this.editSelectedProduct.id!,
+      productName: this.editSelectedProduct.name,
+      productCategory: this.editSelectedProduct.category,
+      quantity: this.editQuantity,
+      unitPrice,
+      subtotal: unitPrice * this.editQuantity,
+      notes: this.editRowNotes || undefined,
+      isPinsa: this.editIsPinsa,
+      noLactose: this.editNoLactose,
+    };
+    this.editLines.push(row);
+    this.editSelectedProduct = null;
+    this.editQuantity = 1;
+    this.editIsPinsa = false;
+    this.editNoLactose = false;
+    this.editRowNotes = '';
+  }
+
+  removeEditLine(index: number): void {
+    this.editLines.splice(index, 1);
+  }
+
+  get editTotal(): number {
+    return this.editLines.reduce((sum, l) => sum + (l.subtotal || 0), 0);
+  }
+
   saveEdit(): void {
-    if (!this.selectedOrder) return;
+    if (!this.selectedOrder || this.editLines.length === 0) return;
 
     this.isSaving = true;
     const updatedOrder: Order = {
       ...this.selectedOrder,
       deliveryTime: this.editDeliveryTime,
       notes: this.editNotes,
-      paymentMethod: this.editPaymentMethod
+      paymentMethod: this.editPaymentMethod,
+      lines: this.editLines,
+      total: this.editTotal,
     };
 
     this.apiService.updateOrder(this.selectedOrder.id!, updatedOrder).subscribe({
@@ -127,6 +189,7 @@ export class ViewOrdersComponent implements OnInit {
           this.orders[index] = updatedOrder;
         }
         this.selectedOrder = updatedOrder;
+        this.newStatus = updatedOrder.status || '';
       },
       error: (err) => {
         this.error = 'Error updating status';
@@ -152,15 +215,15 @@ export class ViewOrdersComponent implements OnInit {
 
   getStatusColor(status: string | undefined): string {
     switch (status) {
-      case 'IN_PREPARAZIONE':
+      case 'IN_PREPARATION':
         return 'bg-blue-100 text-blue-800';
-      case 'PRONTO':
+      case 'READY':
         return 'bg-green-100 text-green-800';
-      case 'IN_CONSEGNA':
+      case 'IN_DELIVERY':
         return 'bg-yellow-100 text-yellow-800';
-      case 'CONSEGNATO':
+      case 'DELIVERED':
         return 'bg-gray-100 text-gray-800';
-      case 'ANNULLATO':
+      case 'CANCELLED':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';

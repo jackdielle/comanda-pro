@@ -83,7 +83,12 @@
     "updateStatus": "Aggiorna Stato",
     "orderTotal": "Totale Ordine",
     "deleteOrder": "Elimina Ordine",
-    "archiveNotice": "Questo è un ordine archiviato. Le informazioni del cliente non vengono visualizzate per la protezione della privacy."
+    "archiveNotice": "Questo è un ordine archiviato. Le informazioni del cliente non vengono visualizzate per la protezione della privacy.",
+    "IN_PREPARATION": "IN PREPARAZIONE",
+    "READY": "PRONTO",
+    "IN_DELIVERY": "IN CONSEGNA",
+    "DELIVERED": "CONSEGNATO",
+    "CANCELLED": "ANNULLATO"
   },
   "newOrder": {
     "title": "Nuovo Ordine",
@@ -179,7 +184,15 @@
     "editProduct": "Modifica Prodotto",
     "available": "Disponibile",
     "noProductsInCategory": "Nessun prodotto in questa categoria",
-    "selectCategory": "Seleziona categoria..."
+    "selectCategory": "Seleziona categoria...",
+    "CLASSIC": "Pizze Classiche",
+    "SPECIAL": "Pizze Speciali",
+    "PINSE": "Pinse",
+    "PANOZZI": "Panozzi",
+    "ROLLED": "Arrotolati",
+    "FRIED": "Fritti",
+    "BEVERAGES": "Bevande",
+    "DESSERTS": "Dolci"
   },
   "admin": {
     "title": "Gestione Utenti",
@@ -240,6 +253,7 @@
     "details": "Dettagli",
     "creating": "Creazione in corso...",
     "saving": "Salvataggio in corso...",
-    "archived": "Archiviato"
+    "archived": "Archiviato",
+    "optional": "Opzionale"
   }
 }
