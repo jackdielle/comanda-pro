@@ -270,7 +270,7 @@ public class OrderService {
         long endOfDay = today.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant().toEpochMilli() - 1;
 
         List<Order> todayOrders = orderRepository.findAll().stream()
-            .filter(o -> o.getCreatedAt() >= startOfDay && o.getCreatedAt() <= endOfDay)
+            .filter(o -> o.getCreatedAt() != null && o.getCreatedAt() >= startOfDay && o.getCreatedAt() <= endOfDay)
             .collect(Collectors.toList());
 
         return OrderSummaryDTO.builder()
@@ -303,7 +303,7 @@ public class OrderService {
             long dayEnd = date.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant().toEpochMilli() - 1;
 
             List<Order> dayOrders = allOrders.stream()
-                .filter(o -> o.getCreatedAt() >= dayStart && o.getCreatedAt() <= dayEnd)
+                .filter(o -> o.getCreatedAt() != null && o.getCreatedAt() >= dayStart && o.getCreatedAt() <= dayEnd)
                 .collect(Collectors.toList());
 
             DailyOrderSummaryDTO daily = DailyOrderSummaryDTO.builder()
